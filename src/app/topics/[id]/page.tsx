@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { CodeBlock, FavoriteButton } from '@/components';
+import { CodeBlock, FavoriteButton, Markdown } from '@/components';
 import { getTopicById, getCategoryById, topics } from '@/data/knowledge';
 
 interface TopicPageProps {
@@ -72,10 +72,12 @@ export default async function TopicPage({ params }: TopicPageProps) {
               </span>
             </div>
           </div>
-          <p className="text-lg text-[var(--ink-light)] leading-relaxed">{topic.description}</p>
+          <div className="text-lg text-[var(--ink-light)] leading-relaxed">
+            <Markdown>{topic.description}</Markdown>
+          </div>
         </header>
 
-        {/* Key Points */}
+        {/* Key Points */
         <section className="mb-10">
           <h2 className="text-xl font-serif font-semibold text-[var(--ink)] mb-5 pb-2 border-b border-[var(--border)]">
             Key Points

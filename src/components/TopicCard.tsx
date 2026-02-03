@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Topic } from '@/types';
 import FavoriteButton from './FavoriteButton';
+import Markdown from './Markdown';
 
 interface TopicCardProps {
   topic: Topic;
@@ -29,7 +30,9 @@ export default function TopicCard({ topic }: TopicCardProps) {
           </div>
         </div>
         
-        <p className="text-[var(--ink-light)] text-sm mb-4 line-clamp-2 leading-relaxed flex-grow">{topic.description}</p>
+        <div className="text-[var(--ink-light)] text-sm mb-4 line-clamp-2 leading-relaxed flex-grow">
+          <Markdown>{topic.description}</Markdown>
+        </div>
         
         <div className="flex flex-wrap gap-2">
           {topic.keyPoints.slice(0, 3).map((kp, idx) => (
