@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevShowcase
+
+A personal knowledge showcase web application to document and review what you've learned throughout your software development career.
+
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
+
+## Features
+
+- **📚 Knowledge Categories** - Organize topics by languages, frameworks, concepts, and more
+- **📝 Topic Pages** - Detailed pages with key points and code examples
+- **🔍 Search** - Quickly find topics across your entire knowledge base
+- **🧠 Quiz Mode** - Test yourself with flashcard-style questions
+- **🌙 Dark Theme** - Easy on the eyes for long reading sessions
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### New Topic
 
-## Learn More
+Edit `src/data/knowledge.ts` and add to the `topics` array:
 
-To learn more about Next.js, take a look at the following resources:
+```typescript
+{
+  id: 'topic-id',
+  title: 'Topic Title',
+  description: 'Brief description',
+  category: 'languages', // Match a category id
+  confidence: 'intermediate',
+  keyPoints: [
+    { title: 'Key Point', description: 'Description' }
+  ],
+  codeExamples: [
+    {
+      title: 'Example',
+      language: 'typescript',
+      code: `// your code`,
+      explanation: 'Explanation'
+    }
+  ]
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### New Category
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Add to the `categories` array in `src/data/knowledge.ts`.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/                  # Next.js App Router pages
+│   ├── categories/       # Category listing and detail pages
+│   ├── topics/           # Topic detail pages
+│   ├── search/           # Search results page
+│   ├── quiz/             # Quiz mode page
+│   └── page.tsx          # Homepage
+├── components/           # Reusable React components
+├── data/                 # Knowledge base data
+└── types/                # TypeScript definitions
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server with Turbopack |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+## Tech Stack
+
+- [Next.js 15](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Turbopack](https://turbo.build/pack) - Fast bundler
+
+## License
+
+MIT
