@@ -1,7 +1,7 @@
-# DevShowcase - Project Instructions
+# Study Helper - Project Instructions
 
 ## Overview
-This is a personal knowledge showcase web application built with Next.js, TypeScript, and Tailwind CSS. It helps you document and review what you've learned throughout your software development career.
+This is a personal study helper web application built with Next.js, TypeScript, and Tailwind CSS. It helps you document and review what you've learned throughout your software development career.
 
 ## Project Structure
 - `src/app/` - Next.js App Router pages

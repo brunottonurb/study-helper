@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevShowcase - My Developer Knowledge Base",
-  description: "A personal showcase of programming knowledge, frameworks, and concepts learned throughout my software development career",
+  title: "Study Helper",
+  description: "A personal study helper web application to document and review what I've learned throughout my software development career",
 };
 
 export default function RootLayout({

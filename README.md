@@ -1,6 +1,6 @@
-# DevShowcase
+# Dev Study Helper
 
-A personal knowledge showcase web application to document and review what you've learned throughout your software development career.
+A personal study helper web application to document and review what I've learned throughout my software development career.
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
