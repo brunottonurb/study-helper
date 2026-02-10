@@ -75,7 +75,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {categories.map((category) => (
+            {categories.slice(0, 4).map((category) => (
               <CategoryCard
                 key={category.id}
                 category={category}
@@ -109,7 +109,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="font-serif text-[var(--ink)]">Study Notes</span>
             <p className="text-[var(--ink-light)] text-sm">
-              Built with Next.js &amp; TypeScript
+              Vibe coded with Next.js &amp; TypeScript
             </p>
           </div>
         </div>
