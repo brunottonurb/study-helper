@@ -77,7 +77,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
           </div>
         </header>
 
-        {/* Key Points */
+        {/* Key Points */}
         <section className="mb-10">
           <h2 className="text-xl font-serif font-semibold text-[var(--ink)] mb-5 pb-2 border-b border-[var(--border)]">
             Key Points
@@ -89,7 +89,9 @@ export default async function TopicPage({ params }: TopicPageProps) {
                 className="bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow"
               >
                 <h3 className="font-serif font-semibold text-[var(--ink)] mb-1">{point.title}</h3>
-                <p className="text-[var(--ink-light)] text-sm leading-relaxed">{point.description}</p>
+                <div className="text-[var(--ink-light)] text-sm leading-relaxed">
+                  <Markdown>{point.description}</Markdown>
+                </div>
               </div>
             ))}
           </div>
