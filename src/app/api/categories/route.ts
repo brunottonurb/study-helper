@@ -4,11 +4,19 @@ import { categories as defaultCategories } from '@/data/categories';
 import { topics as defaultTopics } from '@/data/topics';
 import { Category } from '@/types';
 
-// Initialize data files on first load
-initializeDataFiles(defaultCategories, defaultTopics);
+// Singleton flag to ensure initialization only happens once
+let isInitialized = false;
+
+async function ensureInitialized() {
+  if (!isInitialized) {
+    await initializeDataFiles(defaultCategories, defaultTopics);
+    isInitialized = true;
+  }
+}
 
 // GET all categories
 export async function GET() {
+  await ensureInitialized();
   try {
     const categories = await readCategories();
     return NextResponse.json(categories);
@@ -19,6 +27,7 @@ export async function GET() {
 
 // POST new category
 export async function POST(request: NextRequest) {
+  await ensureInitialized();
   try {
     const newCategory: Category = await request.json();
     

@@ -1,6 +1,6 @@
 import { CategoriesClient } from '@/components/CategoriesClient';
 import { readCategories, readTopics } from '@/lib/data-store';
-import { getTopicsByCategory } from '@/lib/api-client';
+import { getTopicsByCategory } from '@/lib/data-utils';
 
 export const metadata = {
   title: 'Subjects - Study Notes',

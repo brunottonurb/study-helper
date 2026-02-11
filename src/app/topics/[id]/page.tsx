@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { TopicClient } from '@/components/TopicClient';
 import { readCategories, readTopics } from '@/lib/data-store';
-import { getTopicById, getCategoryById } from '@/lib/api-client';
+import { getTopicById, getCategoryById } from '@/lib/data-utils';
 
 interface TopicPageProps {
   params: Promise<{ id: string }>;
