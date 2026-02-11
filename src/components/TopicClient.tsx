@@ -40,7 +40,7 @@ export function TopicClient({ topic, category, allCategories }: TopicClientProps
       await deleteTopic(topic.id);
       router.push(`/categories/${topic.category}`);
       router.refresh();
-    } catch (error) {
+    } catch {
       alert('Failed to delete topic');
       setIsDeleting(false);
     }

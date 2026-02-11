@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     }
     
     return NextResponse.json(topic);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch topic' }, { status: 500 });
   }
 }
@@ -47,7 +47,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     await writeTopics(topics);
     
     return NextResponse.json(topics[index]);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to update topic' }, { status: 500 });
   }
 }
@@ -67,7 +67,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     await writeTopics(filtered);
     
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to delete topic' }, { status: 500 });
   }
 }

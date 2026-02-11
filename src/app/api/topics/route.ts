@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const topics = await readTopics();
     return NextResponse.json(topics);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch topics' }, { status: 500 });
   }
 }
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     await writeTopics(topics);
     
     return NextResponse.json(newTopic, { status: 201 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to create topic' }, { status: 500 });
   }
 }

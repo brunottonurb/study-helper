@@ -10,7 +10,7 @@ const TOPICS_FILE = path.join(DATA_DIR, 'topics.json');
 async function ensureDataDir() {
   try {
     await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch (error) {
+  } catch {
     // Directory might already exist
   }
 }
@@ -37,7 +37,7 @@ export async function readCategories(): Promise<Category[]> {
   try {
     const data = await fs.readFile(CATEGORIES_FILE, 'utf-8');
     return JSON.parse(data);
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -52,7 +52,7 @@ export async function readTopics(): Promise<Topic[]> {
   try {
     const data = await fs.readFile(TOPICS_FILE, 'utf-8');
     return JSON.parse(data);
-  } catch (error) {
+  } catch {
     return [];
   }
 }

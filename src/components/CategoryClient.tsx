@@ -34,7 +34,7 @@ export function CategoryClient({ category, categoryTopics, allCategories }: Cate
       await deleteCategory(category.id);
       router.push('/categories');
       router.refresh();
-    } catch (error) {
+    } catch {
       alert('Failed to delete category');
       setIsDeleting(false);
     }

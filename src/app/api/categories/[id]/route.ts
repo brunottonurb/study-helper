@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     }
     
     return NextResponse.json(category);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch category' }, { status: 500 });
   }
 }
@@ -47,7 +47,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     await writeCategories(categories);
     
     return NextResponse.json(categories[index]);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to update category' }, { status: 500 });
   }
 }
@@ -67,7 +67,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     await writeCategories(filtered);
     
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to delete category' }, { status: 500 });
   }
 }

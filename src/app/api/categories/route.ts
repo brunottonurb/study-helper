@@ -12,7 +12,7 @@ export async function GET() {
   try {
     const categories = await readCategories();
     return NextResponse.json(categories);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
   }
 }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     await writeCategories(categories);
     
     return NextResponse.json(newCategory, { status: 201 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to create category' }, { status: 500 });
   }
 }
