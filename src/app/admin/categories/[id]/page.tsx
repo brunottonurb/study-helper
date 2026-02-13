@@ -31,6 +31,7 @@ export default function EditCategory() {
     if (status === 'authenticated' && id) {
       fetchCategory();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, id]);
 
   const fetchCategory = async () => {
@@ -65,8 +66,8 @@ export default function EditCategory() {
       }
 
       router.push('/admin/categories');
-    } catch (err: any) {
-      setError(err.message || 'Failed to update category');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update category');
     } finally {
       setSaving(false);
     }

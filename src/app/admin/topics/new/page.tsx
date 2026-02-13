@@ -87,8 +87,8 @@ export default function NewTopic() {
       }
 
       router.push('/admin/topics');
-    } catch (err: any) {
-      setError(err.message || 'Failed to create topic');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create topic');
     } finally {
       setLoading(false);
     }

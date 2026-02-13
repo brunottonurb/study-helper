@@ -59,6 +59,7 @@ export default function EditTopic() {
     if (status === 'authenticated' && id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, id]);
 
   const fetchData = async () => {
@@ -86,7 +87,7 @@ export default function EditTopic() {
         keyPoints: topicData.keyPoints || [],
         codeExamples: topicData.codeExamples || [],
         quizQuestions: topicData.quizQuestions || [],
-        resources: (topicData.resources || []).map((r: any) => r.url),
+        resources: (topicData.resources || []).map((r: { url: string }) => r.url),
       });
     } catch (err) {
       setError('Failed to load data');
@@ -114,8 +115,8 @@ export default function EditTopic() {
       }
 
       router.push('/admin/topics');
-    } catch (err: any) {
-      setError(err.message || 'Failed to update topic');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update topic');
     } finally {
       setSaving(false);
     }

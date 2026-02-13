@@ -37,6 +37,7 @@ export default function TopicsManagement() {
     if (status === 'authenticated') {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, selectedCategory]);
 
   const fetchData = async () => {
