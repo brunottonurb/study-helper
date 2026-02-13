@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CodeBlock, FavoriteButton, Markdown } from '@/components';
-import { getTopicById, getCategoryById, topics } from '@/data/knowledge';
+import { getTopicById, getCategoryById, getAllTopics } from '@/lib/data';
 
 interface TopicPageProps {
   params: Promise<{ id: string }>;
 }
 
 export async function generateStaticParams() {
+  const topics = await getAllTopics();
   return topics.map((topic) => ({
     id: topic.id,
   }));
@@ -15,7 +16,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: TopicPageProps) {
   const { id } = await params;
-  const topic = getTopicById(id);
+  const topic = await getTopicById(id);
   if (!topic) return { title: 'Topic Not Found' };
   
   return {
@@ -33,13 +34,13 @@ const confidenceLabels = {
 
 export default async function TopicPage({ params }: TopicPageProps) {
   const { id } = await params;
-  const topic = getTopicById(id);
+  const topic = await getTopicById(id);
   
   if (!topic) {
     notFound();
   }
 
-  const category = getCategoryById(topic.category);
+  const category = await getCategoryById(topic.category);
 
   return (
     <div className="min-h-screen py-12">

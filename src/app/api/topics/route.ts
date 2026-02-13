@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { getAllTopics, searchTopics } from '@/lib/data';
 import { prisma } from '@/lib/prisma';
 
-// GET /api/topics - Get all topics with relations
+// GET /api/topics - Get all topics or search topics
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const categoryId = searchParams.get('categoryId');
+    const searchQuery = searchParams.get('search');
 
-    const topics = await prisma.topic.findMany({
-      where: categoryId ? { categoryId } : undefined,
-      include: {
-        keyPoints: { orderBy: { order: 'asc' } },
-        codeExamples: { orderBy: { order: 'asc' } },
-        quizQuestions: { orderBy: { order: 'asc' } },
-        resources: { orderBy: { order: 'asc' } },
-        category: true,
-      },
-      orderBy: { title: 'asc' },
-    });
+    let topics;
+    if (searchQuery) {
+      topics = await searchTopics(searchQuery);
+    } else {
+      topics = await getAllTopics();
+    }
 
     return NextResponse.json(topics);
   } catch (error) {
