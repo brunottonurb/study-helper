@@ -1,8 +1,23 @@
 import { prisma } from './prisma';
 import type { Category, Topic } from '@/types';
+import type { 
+  Topic as PrismaTopic, 
+  KeyPoint as PrismaKeyPoint,
+  CodeExample as PrismaCodeExample,
+  QuizQuestion as PrismaQuizQuestion,
+  Resource as PrismaResource,
+  Category as PrismaCategory
+} from '@prisma/client';
+
+type TopicWithRelations = PrismaTopic & {
+  keyPoints: PrismaKeyPoint[];
+  codeExamples: PrismaCodeExample[];
+  quizQuestions: PrismaQuizQuestion[];
+  resources: PrismaResource[];
+};
 
 // Transform database results to match the existing Topic interface
-function transformTopicFromDB(dbTopic: any): Topic {
+function transformTopicFromDB(dbTopic: TopicWithRelations): Topic {
   return {
     id: dbTopic.id,
     title: dbTopic.title,
@@ -11,26 +26,26 @@ function transformTopicFromDB(dbTopic: any): Topic {
     category: dbTopic.categoryId,
     confidence: dbTopic.confidence as 'beginner' | 'intermediate' | 'advanced' | 'expert',
     lastReviewed: dbTopic.lastReviewed || undefined,
-    keyPoints: dbTopic.keyPoints?.map((kp: any) => ({
+    keyPoints: dbTopic.keyPoints.map((kp) => ({
       title: kp.title,
       description: kp.description,
-    })) || [],
-    codeExamples: dbTopic.codeExamples?.map((ce: any) => ({
+    })),
+    codeExamples: dbTopic.codeExamples.map((ce) => ({
       title: ce.title,
       language: ce.language,
       code: ce.code,
       explanation: ce.explanation || undefined,
-    })) || [],
-    quizQuestions: dbTopic.quizQuestions?.map((qq: any) => ({
+    })),
+    quizQuestions: dbTopic.quizQuestions.map((qq) => ({
       question: qq.question,
       answer: qq.answer,
-    })) || [],
-    resources: dbTopic.resources?.map((r: any) => r.url) || [],
+    })),
+    resources: dbTopic.resources.map((r) => r.url),
   };
 }
 
 // Transform database category to match the existing Category interface
-function transformCategoryFromDB(dbCategory: any): Category {
+function transformCategoryFromDB(dbCategory: PrismaCategory): Category {
   return {
     id: dbCategory.id,
     name: dbCategory.name,
