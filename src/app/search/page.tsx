@@ -29,7 +29,6 @@ function SearchResults() {
         console.error('Search error:', err);
         setIsLoading(false);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (
