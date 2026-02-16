@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const isAdminRoute = req.nextUrl.pathname.startsWith('/admin') && !req.nextUrl.pathname.startsWith('/admin/login');
   const isApiAdminRoute = req.nextUrl.pathname.startsWith('/api/admin');
-  
+
   if (isAdminRoute || isApiAdminRoute) {
     // Check for the session token cookie
     const sessionToken = req.cookies.get('authjs.session-token') || req.cookies.get('__Secure-authjs.session-token');
-    
+
     if (!sessionToken) {
       if (isApiAdminRoute) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
