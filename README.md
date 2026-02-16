@@ -166,6 +166,140 @@ prisma/
 | `npx prisma migrate dev` | Create and apply migrations |
 | `npx prisma db seed` | Seed database with initial data |
 
+## Database Management with Prisma
+
+### Initial Setup (First Time)
+
+When setting up the project for the first time or on a new machine:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Create the .env file
+cp .env.example .env
+
+# 3. Generate Prisma Client
+npx prisma generate
+
+# 4. Run migrations to create database tables
+npx prisma migrate dev
+
+# 5. Seed the database with initial data
+npx prisma db seed
+```
+
+### Common Database Tasks
+
+#### Viewing and Editing Data
+
+```bash
+# Open Prisma Studio - a visual database editor
+npx prisma studio
+```
+
+This opens a web interface at `http://localhost:5555` where you can:
+- Browse all tables and data
+- Add, edit, and delete records
+- Test queries
+
+#### Making Schema Changes
+
+When you need to modify the database structure:
+
+1. Edit `prisma/schema.prisma` to make your changes
+2. Create and apply a new migration:
+
+```bash
+npx prisma migrate dev --name describe_your_change
+```
+
+Example:
+```bash
+npx prisma migrate dev --name add_user_email
+```
+
+#### Resetting the Database
+
+⚠️ **Warning**: This will delete all data!
+
+```bash
+# Reset database to clean state
+npx prisma migrate reset
+
+# This will:
+# 1. Drop the database
+# 2. Create a new database
+# 3. Apply all migrations
+# 4. Run the seed script
+```
+
+#### Reseeding Data
+
+If you want to refresh the data without resetting the entire database:
+
+```bash
+# Just run the seed script again
+npx prisma db seed
+```
+
+Note: The seed script uses `upsert` operations, so it will update existing records or create new ones.
+
+#### Checking Migration Status
+
+```bash
+# View current migration status
+npx prisma migrate status
+```
+
+#### Generating Prisma Client
+
+After pulling changes that include schema modifications:
+
+```bash
+# Regenerate the Prisma Client
+npx prisma generate
+```
+
+### Troubleshooting
+
+**Issue**: "Prisma Client could not be found"
+```bash
+npx prisma generate
+```
+
+**Issue**: "Database schema is not in sync with migrations"
+```bash
+npx prisma migrate dev
+```
+
+**Issue**: Want to start fresh with clean data
+```bash
+npx prisma migrate reset
+# Say 'yes' to confirm
+```
+
+**Issue**: Need to backup your database
+```bash
+# SQLite database is just a file - copy it
+cp dev.db dev.db.backup
+```
+
+### Production Database Setup
+
+For production deployments:
+
+1. Use a production-grade database (PostgreSQL recommended)
+2. Update `DATABASE_URL` in your production environment
+3. Update `prisma/schema.prisma` datasource provider if needed
+4. Run migrations in production:
+
+```bash
+npx prisma migrate deploy
+```
+
+Note: `migrate deploy` is used in production (doesn't prompt, doesn't seed).
+
 ## Tech Stack
 
 - [Next.js 16](https://nextjs.org/) - React framework with App Router

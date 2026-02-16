@@ -68,36 +68,36 @@ export default function CategoriesManagement() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-gray-900 dark:text-white text-lg">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-[var(--ink)] text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen py-12">
+      <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+        <div className="border-b border-[var(--border)] pb-6 mb-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-serif font-bold text-[var(--ink)]">
                 Manage Categories
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-[var(--ink-light)] mt-1">
                 {categories.length} {categories.length === 1 ? 'category' : 'categories'}
               </p>
             </div>
             <div className="flex gap-3">
               <Link
                 href="/admin"
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                className="px-4 py-2 bg-[var(--paper)] border border-[var(--border)] text-[var(--ink)] hover:bg-[var(--code-bg)] transition cursor-pointer"
               >
                 ← Back
               </Link>
               <Link
                 href="/admin/categories/new"
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition"
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 + Add Category
               </Link>
@@ -106,8 +106,8 @@ export default function CategoriesManagement() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-600 dark:text-red-400">{error}</p>
+          <div className="mb-6 p-4 border border-red-300 bg-red-50 dark:bg-red-900/20">
+            <p className="text-red-700 dark:text-red-400">{error}</p>
           </div>
         )}
 
@@ -116,25 +116,25 @@ export default function CategoriesManagement() {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+              className="border border-[var(--border)] p-6 hover:bg-[var(--paper)] transition"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4 flex-1">
-                  <div className={`text-4xl bg-gradient-to-br ${category.color} p-3 rounded-lg`}>
+                  <div className="text-3xl">
                     {category.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-lg font-semibold text-[var(--ink)] mb-2">
                       {category.name}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-[var(--ink-light)] text-sm mb-3">
                       {category.description}
                     </p>
                     <div className="flex gap-2 flex-wrap">
-                      <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
+                      <span className="text-xs bg-[var(--paper)] text-[var(--ink-light)] px-2 py-1 border border-[var(--border)]">
                         ID: {category.id}
                       </span>
-                      <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
+                      <span className="text-xs bg-[var(--paper)] text-[var(--ink-light)] px-2 py-1 border border-[var(--border)]">
                         Color: {category.color}
                       </span>
                     </div>
@@ -143,13 +143,13 @@ export default function CategoriesManagement() {
                 <div className="flex gap-2 ml-4">
                   <Link
                     href={`/admin/categories/${category.id}`}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                    className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:bg-[var(--paper)] transition cursor-pointer text-sm"
                   >
                     Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(category.id)}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                    className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer text-sm"
                   >
                     Delete
                   </button>
@@ -159,13 +159,13 @@ export default function CategoriesManagement() {
           ))}
 
           {categories.length === 0 && !loading && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-12 text-center">
-              <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
+            <div className="border border-[var(--border)] p-12 text-center">
+              <p className="text-[var(--ink-light)] text-lg mb-4">
                 No categories found
               </p>
               <Link
                 href="/admin/categories/new"
-                className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition"
+                className="inline-block px-6 py-3 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 Create Your First Category
               </Link>

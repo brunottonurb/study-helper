@@ -185,23 +185,23 @@ export default function NewTopic() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-gray-900 dark:text-white text-lg">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-[var(--ink)] text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div className="min-h-screen py-8">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+        <div className="bg-[var(--paper)] border border-[var(--border)] p-6 mb-6">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-[var(--ink)]">
               Create New Topic
             </h1>
             <Link
               href="/admin/topics"
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+              className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:opacity-80 transition cursor-pointer"
             >
               ← Back
             </Link>
@@ -209,18 +209,18 @@ export default function NewTopic() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-600 dark:text-red-400">{error}</p>
+          <div className="mb-6 p-4 border border-[var(--border)] bg-[var(--paper)]">
+            <p className="text-[var(--ink)]">{error}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Basic Information</h2>
+          <div className="bg-[var(--paper)] border border-[var(--border)] p-6 space-y-6">
+            <h2 className="text-xl font-bold text-[var(--ink)]">Basic Information</h2>
 
             <div>
-              <label htmlFor="id" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="id" className="block text-sm font-medium text-[var(--ink)] mb-2">
                 ID (URL-friendly) *
               </label>
               <input
@@ -231,12 +231,12 @@ export default function NewTopic() {
                 onChange={handleChange}
                 required
                 placeholder="e.g., react-hooks"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
               />
             </div>
 
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="title" className="block text-sm font-medium text-[var(--ink)] mb-2">
                 Title *
               </label>
               <input
@@ -247,12 +247,12 @@ export default function NewTopic() {
                 onChange={handleChange}
                 required
                 placeholder="e.g., React Hooks"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
               />
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-[var(--ink)] mb-2">
                 Description *
               </label>
               <textarea
@@ -262,12 +262,12 @@ export default function NewTopic() {
                 onChange={handleChange}
                 required
                 rows={3}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
               />
             </div>
 
             <div>
-              <label htmlFor="icon" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="icon" className="block text-sm font-medium text-[var(--ink)] mb-2">
                 Icon (Emoji)
               </label>
               <input
@@ -277,12 +277,12 @@ export default function NewTopic() {
                 value={formData.icon}
                 onChange={handleChange}
                 placeholder="e.g., ⚛️"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
               />
             </div>
 
             <div>
-              <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="categoryId" className="block text-sm font-medium text-[var(--ink)] mb-2">
                 Category *
               </label>
               <select
@@ -291,7 +291,7 @@ export default function NewTopic() {
                 value={formData.categoryId}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)] cursor-pointer"
               >
                 <option value="">Select a category</option>
                 {categories.map((cat) => (
@@ -303,7 +303,7 @@ export default function NewTopic() {
             </div>
 
             <div>
-              <label htmlFor="confidence" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="confidence" className="block text-sm font-medium text-[var(--ink)] mb-2">
                 Confidence Level *
               </label>
               <select
@@ -312,7 +312,7 @@ export default function NewTopic() {
                 value={formData.confidence}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)] cursor-pointer"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -323,28 +323,28 @@ export default function NewTopic() {
           </div>
 
           {/* Key Points */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Key Points</h2>
+              <h2 className="text-xl font-bold text-[var(--ink)]">Key Points</h2>
               <button
                 type="button"
                 onClick={addKeyPoint}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 + Add Key Point
               </button>
             </div>
             <div className="space-y-4">
               {formData.keyPoints.map((kp, index) => (
-                <div key={index} className="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                <div key={index} className="border border-[var(--border)] p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-[var(--ink)]">
                       Key Point #{index + 1}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeKeyPoint(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-[var(--ink)] hover:opacity-80 cursor-pointer"
                     >
                       Remove
                     </button>
@@ -354,14 +354,14 @@ export default function NewTopic() {
                     placeholder="Title"
                     value={kp.title}
                     onChange={(e) => updateKeyPoint(index, 'title', e.target.value)}
-                    className="w-full px-4 py-2 mb-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                   <textarea
                     placeholder="Description"
                     value={kp.description}
                     onChange={(e) => updateKeyPoint(index, 'description', e.target.value)}
                     rows={2}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                 </div>
               ))}
@@ -369,28 +369,28 @@ export default function NewTopic() {
           </div>
 
           {/* Code Examples */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Code Examples</h2>
+              <h2 className="text-xl font-bold text-[var(--ink)]">Code Examples</h2>
               <button
                 type="button"
                 onClick={addCodeExample}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 + Add Code Example
               </button>
             </div>
             <div className="space-y-4">
               {formData.codeExamples.map((ce, index) => (
-                <div key={index} className="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                <div key={index} className="border border-[var(--border)] p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-[var(--ink)]">
                       Code Example #{index + 1}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeCodeExample(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-[var(--ink)] hover:opacity-80 cursor-pointer"
                     >
                       Remove
                     </button>
@@ -400,28 +400,28 @@ export default function NewTopic() {
                     placeholder="Title"
                     value={ce.title}
                     onChange={(e) => updateCodeExample(index, 'title', e.target.value)}
-                    className="w-full px-4 py-2 mb-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                   <input
                     type="text"
                     placeholder="Language (e.g., typescript, javascript)"
                     value={ce.language}
                     onChange={(e) => updateCodeExample(index, 'language', e.target.value)}
-                    className="w-full px-4 py-2 mb-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                   <textarea
                     placeholder="Code"
                     value={ce.code}
                     onChange={(e) => updateCodeExample(index, 'code', e.target.value)}
                     rows={6}
-                    className="w-full px-4 py-2 mb-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-sm"
+                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)] font-mono text-sm"
                   />
                   <textarea
                     placeholder="Explanation (optional)"
                     value={ce.explanation}
                     onChange={(e) => updateCodeExample(index, 'explanation', e.target.value)}
                     rows={2}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                 </div>
               ))}
@@ -429,28 +429,28 @@ export default function NewTopic() {
           </div>
 
           {/* Quiz Questions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Quiz Questions</h2>
+              <h2 className="text-xl font-bold text-[var(--ink)]">Quiz Questions</h2>
               <button
                 type="button"
                 onClick={addQuizQuestion}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 + Add Question
               </button>
             </div>
             <div className="space-y-4">
               {formData.quizQuestions.map((qq, index) => (
-                <div key={index} className="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                <div key={index} className="border border-[var(--border)] p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-medium text-[var(--ink)]">
                       Question #{index + 1}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeQuizQuestion(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-[var(--ink)] hover:opacity-80 cursor-pointer"
                     >
                       Remove
                     </button>
@@ -460,14 +460,14 @@ export default function NewTopic() {
                     value={qq.question}
                     onChange={(e) => updateQuizQuestion(index, 'question', e.target.value)}
                     rows={2}
-                    className="w-full px-4 py-2 mb-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                   <textarea
                     placeholder="Answer"
                     value={qq.answer}
                     onChange={(e) => updateQuizQuestion(index, 'answer', e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                 </div>
               ))}
@@ -475,13 +475,13 @@ export default function NewTopic() {
           </div>
 
           {/* Resources */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Resources</h2>
+              <h2 className="text-xl font-bold text-[var(--ink)]">Resources</h2>
               <button
                 type="button"
                 onClick={addResource}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 + Add Resource
               </button>
@@ -494,12 +494,12 @@ export default function NewTopic() {
                     placeholder="https://..."
                     value={resource}
                     onChange={(e) => updateResource(index, e.target.value)}
-                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="flex-1 px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
                   <button
                     type="button"
                     onClick={() => removeResource(index)}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                    className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:opacity-80 transition cursor-pointer"
                   >
                     Remove
                   </button>
@@ -509,18 +509,18 @@ export default function NewTopic() {
           </div>
 
           {/* Submit */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
             <div className="flex gap-3">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition disabled:opacity-50"
+                className="flex-1 bg-[var(--ink)] text-[var(--background)] py-3 px-4 font-semibold hover:opacity-80 transition disabled:opacity-50 cursor-pointer"
               >
                 {loading ? 'Creating...' : 'Create Topic'}
               </button>
               <Link
                 href="/admin/topics"
-                className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition text-center"
+                className="px-6 py-3 border border-[var(--border)] text-[var(--ink)] hover:opacity-80 transition text-center cursor-pointer"
               >
                 Cancel
               </Link>

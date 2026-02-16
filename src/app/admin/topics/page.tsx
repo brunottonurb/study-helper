@@ -99,36 +99,36 @@ export default function TopicsManagement() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-gray-900 dark:text-white text-lg">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-[var(--ink)] text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+        <div className="bg-[var(--paper)] border border-[var(--border)] p-6 mb-8">
           <div className="flex justify-between items-center mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-3xl font-bold text-[var(--ink)]">
                 Manage Topics
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-[var(--ink-light)] mt-1">
                 {topics.length} {topics.length === 1 ? 'topic' : 'topics'}
               </p>
             </div>
             <div className="flex gap-3">
               <Link
                 href="/admin"
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:opacity-80 transition cursor-pointer"
               >
                 ← Back
               </Link>
               <Link
                 href="/admin/topics/new"
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition"
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 + Add Topic
               </Link>
@@ -137,14 +137,14 @@ export default function TopicsManagement() {
 
           {/* Category Filter */}
           <div className="flex items-center gap-3">
-            <label htmlFor="category-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="category-filter" className="text-sm font-medium text-[var(--ink)]">
               Filter by category:
             </label>
             <select
               id="category-filter"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)] cursor-pointer"
             >
               <option value="">All Categories</option>
               {categories.map((cat) => (
@@ -157,8 +157,8 @@ export default function TopicsManagement() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-600 dark:text-red-400">{error}</p>
+          <div className="mb-6 p-4 border border-[var(--border)] bg-[var(--paper)]">
+            <p className="text-[var(--ink)]">{error}</p>
           </div>
         )}
 
@@ -167,37 +167,37 @@ export default function TopicsManagement() {
           {topics.map((topic) => (
             <div
               key={topic.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+              className="bg-[var(--paper)] border border-[var(--border)] p-6 hover:border-[var(--ink)] transition"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     {topic.category && (
-                      <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                      <span className="text-xs border border-[var(--border)] text-[var(--ink)] px-2 py-1">
                         {topic.category.name}
                       </span>
                     )}
-                    <span className={`text-xs px-2 py-1 rounded ${getConfidenceBadgeColor(topic.confidence)}`}>
+                    <span className={`text-xs px-2 py-1 ${getConfidenceBadgeColor(topic.confidence)}`}>
                       {topic.confidence}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                  <h3 className="text-xl font-bold text-[var(--ink)] mb-1">
                     {topic.title}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-[var(--ink-light)]">
                     ID: {topic.id}
                   </p>
                 </div>
                 <div className="flex gap-2 ml-4">
                   <Link
                     href={`/admin/topics/${topic.id}`}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                    className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
                   >
                     Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(topic.id)}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                    className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:opacity-80 transition cursor-pointer"
                   >
                     Delete
                   </button>
@@ -207,13 +207,13 @@ export default function TopicsManagement() {
           ))}
 
           {topics.length === 0 && !loading && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-12 text-center">
-              <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
+            <div className="bg-[var(--paper)] border border-[var(--border)] p-12 text-center">
+              <p className="text-[var(--ink-light)] text-lg mb-4">
                 {selectedCategory ? 'No topics found in this category' : 'No topics found'}
               </p>
               <Link
                 href="/admin/topics/new"
-                className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition"
+                className="inline-block px-6 py-3 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
               >
                 Create Your First Topic
               </Link>
