@@ -28,14 +28,12 @@ async function main() {
         name: category.name,
         description: category.description,
         icon: category.icon,
-        color: category.color,
       },
       create: {
         id: category.id,
         name: category.name,
         description: category.description,
         icon: category.icon,
-        color: category.color,
       },
     });
   }

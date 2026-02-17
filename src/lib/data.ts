@@ -51,7 +51,6 @@ function transformCategoryFromDB(dbCategory: PrismaCategory): Category {
     name: dbCategory.name,
     description: dbCategory.description,
     icon: dbCategory.icon,
-    color: dbCategory.color,
   };
 }
 

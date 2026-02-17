@@ -134,9 +134,7 @@ export default function CategoriesManagement() {
                       <span className="text-xs bg-[var(--paper)] text-[var(--ink-light)] px-2 py-1 border border-[var(--border)]">
                         ID: {category.id}
                       </span>
-                      <span className="text-xs bg-[var(--paper)] text-[var(--ink-light)] px-2 py-1 border border-[var(--border)]">
-                        Color: {category.color}
-                      </span>
+
                     </div>
                   </div>
                 </div>

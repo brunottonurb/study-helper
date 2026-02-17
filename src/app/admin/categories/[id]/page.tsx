@@ -18,7 +18,6 @@ export default function EditCategory() {
     name: '',
     description: '',
     icon: '',
-    color: '',
   });
 
   useEffect(() => {
@@ -170,27 +169,6 @@ export default function EditCategory() {
             <p className="text-sm text-[var(--ink-light)] mt-1">
               Use a single emoji character
             </p>
-          </div>
-
-          <div>
-            <label htmlFor="color" className="block text-sm font-medium text-[var(--ink)] mb-2">
-              Color Gradient (Tailwind classes) *
-            </label>
-            <input
-              type="text"
-              id="color"
-              name="color"
-              value={formData.color}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-            />
-            <p className="text-sm text-[var(--ink-light)] mt-1">
-              Example: from-blue-500 to-purple-600
-            </p>
-            {formData.color && (
-              <div className={`mt-3 h-12 bg-gradient-to-r ${formData.color}`}></div>
-            )}
           </div>
 
           <div className="flex gap-3 pt-4">
