@@ -1,8 +1,17 @@
 import Link from 'next/link';
 import { CategoryCard, TopicCard } from '@/components';
-import { categories, topics, getTopicsByCategory } from '@/data/knowledge';
+import { getAllCategories, getAllTopics } from '@/lib/data';
 
-export default function Home() {
+export default async function Home() {
+  const categories = await getAllCategories();
+  const topics = await getAllTopics();
+  
+  // Get topic counts by category
+  const topicCountsByCategory = topics.reduce((acc, topic) => {
+    acc[topic.category] = (acc[topic.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  
   // Get a few recent/featured topics
   const featuredTopics = topics.slice(0, 4);
 
@@ -79,7 +88,7 @@ export default function Home() {
               <CategoryCard
                 key={category.id}
                 category={category}
-                topicCount={getTopicsByCategory(category.id).length}
+                topicCount={topicCountsByCategory[category.id] || 0}
               />
             ))}
           </div>
