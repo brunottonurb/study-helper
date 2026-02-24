@@ -41,6 +41,12 @@ export default async function Home() {
               >
                 Test Knowledge
               </Link>
+              <Link
+                href="/quiz-questions"
+                className="px-5 py-2.5 bg-[var(--paper)] hover:bg-[var(--code-bg)] border border-[var(--border)] text-[var(--ink)] text-sm tracking-wide transition-colors"
+              >
+                View Questions
+              </Link>
             </div>
           </div>
         </div>

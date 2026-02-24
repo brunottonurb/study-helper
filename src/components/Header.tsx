@@ -37,6 +37,9 @@ export default function Header() {
             <Link href="/quiz" className="text-[var(--ink-light)] hover:text-[var(--ink)] transition-colors text-sm tracking-wide">
               Quiz
             </Link>
+            <Link href="/quiz-questions" className="text-[var(--ink-light)] hover:text-[var(--ink)] transition-colors text-sm tracking-wide">
+              Questions
+            </Link>
             <Link href="/favorites" className="text-[var(--ink-light)] hover:text-[var(--ink)] transition-colors text-sm tracking-wide">
               My List
             </Link>
