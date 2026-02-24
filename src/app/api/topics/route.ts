@@ -8,10 +8,20 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const searchQuery = searchParams.get('search');
+    const categoryId = searchParams.get('categoryId');
 
     let topics;
     if (searchQuery) {
       topics = await searchTopics(searchQuery);
+      if (categoryId) {
+        topics = topics.filter((t: { categoryId: string }) => t.categoryId === categoryId);
+      }
+    } else if (categoryId) {
+      topics = await prisma.topic.findMany({
+        where: { categoryId },
+        include: { category: true },
+        orderBy: { title: 'asc' },
+      });
     } else {
       topics = await getAllTopics();
     }
