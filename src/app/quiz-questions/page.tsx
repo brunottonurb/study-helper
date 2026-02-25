@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Markdown from '@/components/Markdown';
 
 interface Category {
   id: string;
@@ -161,16 +162,16 @@ export default function QuizQuestionsPage() {
                             {idx + 1}.
                           </span>
                           <div className="flex-1">
-                            <p className="text-[var(--ink)] font-medium mb-2">
-                              {question.question}
-                            </p>
+                            <div className="text-[var(--ink)] font-medium mb-2 prose prose-invert max-w-none">
+                              <Markdown>{question.question}</Markdown>
+                            </div>
                             <details className="cursor-pointer">
                               <summary className="text-sm text-[var(--ink-light)] hover:text-[var(--ink)] transition">
                                 Show answer
                               </summary>
-                              <p className="mt-2 p-3 bg-[var(--code-bg)] text-[var(--ink)] rounded border border-[var(--border)]">
-                                {question.answer}
-                              </p>
+                              <div className="mt-2 p-3 bg-[var(--code-bg)] text-[var(--ink)] rounded border border-[var(--border)] prose prose-invert max-w-none">
+                                <Markdown>{question.answer}</Markdown>
+                              </div>
                             </details>
                           </div>
                         </div>

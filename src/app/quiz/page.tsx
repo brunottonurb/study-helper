@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useUserData } from '@/components';
+import { useUserData, Markdown } from '@/components';
 import type { Topic } from '@/types';
 
 interface Question {
@@ -193,14 +193,16 @@ export default function QuizPage() {
             {currentQuestion.topic.title}
           </div>
           
-          <h2 className="text-xl font-serif font-semibold text-[var(--ink)] mb-6 leading-relaxed">
-            {currentQuestion.question}
-          </h2>
+          <div className="text-xl font-serif font-semibold text-[var(--ink)] mb-6 leading-relaxed prose prose-invert max-w-none">
+            <Markdown>{currentQuestion.question}</Markdown>
+          </div>
           
           {showAnswer ? (
             <div className="bg-[var(--code-bg)] border border-[var(--border)] p-4">
               <div className="text-xs text-[var(--ink-light)] mb-2 uppercase tracking-wider">Answer</div>
-              <p className="text-[var(--ink)] leading-relaxed">{currentQuestion.answer}</p>
+              <div className="text-[var(--ink)] leading-relaxed prose prose-invert max-w-none">
+                <Markdown>{currentQuestion.answer}</Markdown>
+              </div>
             </div>
           ) : (
             <button
