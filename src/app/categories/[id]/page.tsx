@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { TopicCard } from '@/components';
-import { getCategoryById, getTopicsByCategory, categories } from '@/data/knowledge';
+import { getCategoryById, getTopicsByCategory, getAllCategories } from '@/lib/data';
 
 interface CategoryPageProps {
   params: Promise<{ id: string }>;
 }
 
 export async function generateStaticParams() {
+  const categories = await getAllCategories();
   return categories.map((category) => ({
     id: category.id,
   }));
@@ -15,7 +16,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { id } = await params;
-  const category = getCategoryById(id);
+  const category = await getCategoryById(id);
   if (!category) return { title: 'Subject Not Found' };
   
   return {
@@ -26,13 +27,13 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { id } = await params;
-  const category = getCategoryById(id);
+  const category = await getCategoryById(id);
   
   if (!category) {
     notFound();
   }
 
-  const categoryTopics = getTopicsByCategory(id);
+  const categoryTopics = await getTopicsByCategory(id);
 
   return (
     <div className="min-h-screen py-12">

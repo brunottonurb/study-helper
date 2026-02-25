@@ -1,8 +1,17 @@
 import Link from 'next/link';
 import { CategoryCard, TopicCard } from '@/components';
-import { categories, topics, getTopicsByCategory } from '@/data/knowledge';
+import { getAllCategories, getAllTopics } from '@/lib/data';
 
-export default function Home() {
+export default async function Home() {
+  const categories = await getAllCategories();
+  const topics = await getAllTopics();
+  
+  // Get topic counts by category
+  const topicCountsByCategory = topics.reduce((acc, topic) => {
+    acc[topic.category] = (acc[topic.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  
   // Get a few recent/featured topics
   const featuredTopics = topics.slice(0, 4);
 
@@ -31,6 +40,12 @@ export default function Home() {
                 className="px-5 py-2.5 bg-[var(--paper)] hover:bg-[var(--code-bg)] border border-[var(--border)] text-[var(--ink)] text-sm tracking-wide transition-colors"
               >
                 Test Knowledge
+              </Link>
+              <Link
+                href="/quiz-questions"
+                className="px-5 py-2.5 bg-[var(--paper)] hover:bg-[var(--code-bg)] border border-[var(--border)] text-[var(--ink)] text-sm tracking-wide transition-colors"
+              >
+                View Questions
               </Link>
             </div>
           </div>
@@ -79,7 +94,7 @@ export default function Home() {
               <CategoryCard
                 key={category.id}
                 category={category}
-                topicCount={getTopicsByCategory(category.id).length}
+                topicCount={topicCountsByCategory[category.id] || 0}
               />
             ))}
           </div>

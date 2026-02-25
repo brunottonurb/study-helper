@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { topics } from '@/data/knowledge';
-import { useUserData } from '@/components';
-import { Topic } from '@/types';
+import { useUserData, Markdown } from '@/components';
+import type { Topic } from '@/types';
 
 interface Question {
   id: string;
@@ -43,18 +42,28 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export default function QuizPage() {
-  const baseQuestions = useMemo(() => generateQuestions(topics), []);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [isComplete, setIsComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { addQuizResult } = useUserData();
 
-  // Shuffle only on client side to avoid hydration mismatch
+  // Load topics and generate questions
   useEffect(() => {
-    setAllQuestions(shuffleArray(baseQuestions));
-  }, [baseQuestions]);
+    fetch('/api/topics')
+      .then(res => res.json())
+      .then((topics: Topic[]) => {
+        const questions = generateQuestions(topics);
+        setAllQuestions(shuffleArray(questions));
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error('Error loading quiz:', err);
+        setIsLoading(false);
+      });
+  }, []);
 
   const currentQuestion = allQuestions[currentIndex];
 
@@ -84,15 +93,26 @@ export default function QuizPage() {
   };
 
   const resetQuiz = () => {
-    setAllQuestions(shuffleArray(baseQuestions));
-    setCurrentIndex(0);
-    setShowAnswer(false);
-    setScore({ correct: 0, incorrect: 0 });
-    setIsComplete(false);
+    setIsLoading(true);
+    fetch('/api/topics')
+      .then(res => res.json())
+      .then((topics: Topic[]) => {
+        const questions = generateQuestions(topics);
+        setAllQuestions(shuffleArray(questions));
+        setCurrentIndex(0);
+        setShowAnswer(false);
+        setScore({ correct: 0, incorrect: 0 });
+        setIsComplete(false);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error('Error loading quiz:', err);
+        setIsLoading(false);
+      });
   };
 
-  // Show loading state while questions are being shuffled
-  if (allQuestions.length === 0) {
+  // Show loading state while questions are being loaded
+  if (isLoading || allQuestions.length === 0) {
     return (
       <div className="min-h-screen py-12">
         <div className="max-w-xl mx-auto px-6">
@@ -173,14 +193,16 @@ export default function QuizPage() {
             {currentQuestion.topic.title}
           </div>
           
-          <h2 className="text-xl font-serif font-semibold text-[var(--ink)] mb-6 leading-relaxed">
-            {currentQuestion.question}
-          </h2>
+          <div className="text-xl font-serif font-semibold text-[var(--ink)] mb-6 leading-relaxed prose prose-invert max-w-none overflow-hidden">
+            <Markdown>{currentQuestion.question}</Markdown>
+          </div>
           
           {showAnswer ? (
             <div className="bg-[var(--code-bg)] border border-[var(--border)] p-4">
               <div className="text-xs text-[var(--ink-light)] mb-2 uppercase tracking-wider">Answer</div>
-              <p className="text-[var(--ink)] leading-relaxed">{currentQuestion.answer}</p>
+              <div className="text-[var(--ink)] leading-relaxed prose prose-invert max-w-none overflow-hidden">
+                <Markdown>{currentQuestion.answer}</Markdown>
+              </div>
             </div>
           ) : (
             <button
