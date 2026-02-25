@@ -10,23 +10,6 @@ interface Category {
   name: string;
 }
 
-interface KeyPoint {
-  title: string;
-  description: string;
-}
-
-interface CodeExample {
-  title: string;
-  language: string;
-  code: string;
-  explanation: string;
-}
-
-interface QuizQuestion {
-  question: string;
-  answer: string;
-}
-
 export default function EditTopic() {
   const { status } = useSession();
   const router = useRouter();
@@ -36,6 +19,9 @@ export default function EditTopic() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [keyPointsCount, setKeyPointsCount] = useState(0);
+  const [codeExamplesCount, setCodeExamplesCount] = useState(0);
+  const [quizQuestionsCount, setQuizQuestionsCount] = useState(0);
   const [formData, setFormData] = useState({
     id: '',
     title: '',
@@ -43,9 +29,6 @@ export default function EditTopic() {
     icon: '',
     categoryId: '',
     confidence: 'beginner',
-    keyPoints: [] as KeyPoint[],
-    codeExamples: [] as CodeExample[],
-    quizQuestions: [] as QuizQuestion[],
     resources: [] as string[],
   });
 
@@ -84,11 +67,11 @@ export default function EditTopic() {
         icon: topicData.icon || '',
         categoryId: topicData.categoryId,
         confidence: topicData.confidence,
-        keyPoints: topicData.keyPoints || [],
-        codeExamples: topicData.codeExamples || [],
-        quizQuestions: topicData.quizQuestions || [],
         resources: (topicData.resources || []).map((r: { url: string }) => r.url),
       });
+      setKeyPointsCount(topicData.keyPoints?.length || 0);
+      setCodeExamplesCount(topicData.codeExamples?.length || 0);
+      setQuizQuestionsCount(topicData.quizQuestions?.length || 0);
     } catch (err) {
       setError('Failed to load data');
       console.error(err);
@@ -128,68 +111,9 @@ export default function EditTopic() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const addKeyPoint = () => {
-    setFormData({
-      ...formData,
-      keyPoints: [...formData.keyPoints, { title: '', description: '' }],
-    });
-  };
 
-  const removeKeyPoint = (index: number) => {
-    setFormData({
-      ...formData,
-      keyPoints: formData.keyPoints.filter((_, i) => i !== index),
-    });
-  };
 
-  const updateKeyPoint = (index: number, field: keyof KeyPoint, value: string) => {
-    const updated = [...formData.keyPoints];
-    updated[index] = { ...updated[index], [field]: value };
-    setFormData({ ...formData, keyPoints: updated });
-  };
 
-  const addCodeExample = () => {
-    setFormData({
-      ...formData,
-      codeExamples: [
-        ...formData.codeExamples,
-        { title: '', language: 'typescript', code: '', explanation: '' },
-      ],
-    });
-  };
-
-  const removeCodeExample = (index: number) => {
-    setFormData({
-      ...formData,
-      codeExamples: formData.codeExamples.filter((_, i) => i !== index),
-    });
-  };
-
-  const updateCodeExample = (index: number, field: keyof CodeExample, value: string) => {
-    const updated = [...formData.codeExamples];
-    updated[index] = { ...updated[index], [field]: value };
-    setFormData({ ...formData, codeExamples: updated });
-  };
-
-  const addQuizQuestion = () => {
-    setFormData({
-      ...formData,
-      quizQuestions: [...formData.quizQuestions, { question: '', answer: '' }],
-    });
-  };
-
-  const removeQuizQuestion = (index: number) => {
-    setFormData({
-      ...formData,
-      quizQuestions: formData.quizQuestions.filter((_, i) => i !== index),
-    });
-  };
-
-  const updateQuizQuestion = (index: number, field: keyof QuizQuestion, value: string) => {
-    const updated = [...formData.quizQuestions];
-    updated[index] = { ...updated[index], [field]: value };
-    setFormData({ ...formData, quizQuestions: updated });
-  };
 
   const addResource = () => {
     setFormData({
@@ -345,153 +269,49 @@ export default function EditTopic() {
 
           {/* Key Points */}
           <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-[var(--ink)]">Key Points</h2>
-              <button
-                type="button"
-                onClick={addKeyPoint}
-                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-bold text-[var(--ink)] mb-2">Key Points</h2>
+                <p className="text-[var(--ink-light)] text-sm">{keyPointsCount} key point{keyPointsCount !== 1 ? 's' : ''}</p>
+              </div>
+              <Link
+                href={`/admin/topics/${id}/key-points`}
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition"
               >
-                + Add Key Point
-              </button>
-            </div>
-            <div className="space-y-4">
-              {formData.keyPoints.map((kp, index) => (
-                <div key={index} className="border border-[var(--border)] p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-[var(--ink)]">
-                      Key Point #{index + 1}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeKeyPoint(index)}
-                      className="text-[var(--ink)] hover:opacity-80 cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    value={kp.title}
-                    onChange={(e) => updateKeyPoint(index, 'title', e.target.value)}
-                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                  <textarea
-                    placeholder="Description"
-                    value={kp.description}
-                    onChange={(e) => updateKeyPoint(index, 'description', e.target.value)}
-                    rows={2}
-                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                </div>
-              ))}
+                Edit Key Points →
+              </Link>
             </div>
           </div>
 
           {/* Code Examples */}
           <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-[var(--ink)]">Code Examples</h2>
-              <button
-                type="button"
-                onClick={addCodeExample}
-                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-bold text-[var(--ink)] mb-2">Code Examples</h2>
+                <p className="text-[var(--ink-light)] text-sm">{codeExamplesCount} code example{codeExamplesCount !== 1 ? 's' : ''}</p>
+              </div>
+              <Link
+                href={`/admin/topics/${id}/code-examples`}
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition"
               >
-                + Add Code Example
-              </button>
-            </div>
-            <div className="space-y-4">
-              {formData.codeExamples.map((ce, index) => (
-                <div key={index} className="border border-[var(--border)] p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-[var(--ink)]">
-                      Code Example #{index + 1}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeCodeExample(index)}
-                      className="text-[var(--ink)] hover:opacity-80 cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    value={ce.title}
-                    onChange={(e) => updateCodeExample(index, 'title', e.target.value)}
-                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Language (e.g., typescript, javascript)"
-                    value={ce.language}
-                    onChange={(e) => updateCodeExample(index, 'language', e.target.value)}
-                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                  <textarea
-                    placeholder="Code"
-                    value={ce.code}
-                    onChange={(e) => updateCodeExample(index, 'code', e.target.value)}
-                    rows={6}
-                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)] font-mono text-sm"
-                  />
-                  <textarea
-                    placeholder="Explanation (optional)"
-                    value={ce.explanation}
-                    onChange={(e) => updateCodeExample(index, 'explanation', e.target.value)}
-                    rows={2}
-                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                </div>
-              ))}
+                Edit Code Examples →
+              </Link>
             </div>
           </div>
 
           {/* Quiz Questions */}
           <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-[var(--ink)]">Quiz Questions</h2>
-              <button
-                type="button"
-                onClick={addQuizQuestion}
-                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-bold text-[var(--ink)] mb-2">Quiz Questions</h2>
+                <p className="text-[var(--ink-light)] text-sm">{quizQuestionsCount} question{quizQuestionsCount !== 1 ? 's' : ''}</p>
+              </div>
+              <Link
+                href={`/admin/topics/${id}/quiz-questions`}
+                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition"
               >
-                + Add Question
-              </button>
-            </div>
-            <div className="space-y-4">
-              {formData.quizQuestions.map((qq, index) => (
-                <div key={index} className="border border-[var(--border)] p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-[var(--ink)]">
-                      Question #{index + 1}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeQuizQuestion(index)}
-                      className="text-[var(--ink)] hover:opacity-80 cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  <textarea
-                    placeholder="Question"
-                    value={qq.question}
-                    onChange={(e) => updateQuizQuestion(index, 'question', e.target.value)}
-                    rows={2}
-                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                  <textarea
-                    placeholder="Answer"
-                    value={qq.answer}
-                    onChange={(e) => updateQuizQuestion(index, 'answer', e.target.value)}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                </div>
-              ))}
+                Edit Questions →
+              </Link>
             </div>
           </div>
 

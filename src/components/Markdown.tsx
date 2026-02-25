@@ -20,6 +20,11 @@ export default function Markdown({ children, className = '' }: MarkdownProps) {
             {children}
           </code>
         ),
+        pre: ({ children }) => (
+          <pre className="bg-[var(--code-bg)] text-[var(--ink)] p-4 overflow-x-auto max-w-full font-mono text-sm border border-[var(--border)] my-2 [&>code]:bg-transparent [&>code]:border-0 [&>code]:p-0 [&>code]:whitespace-pre [&>code]:block">
+            {children}
+          </pre>
+        ),
         a: ({ href, children }) => (
           <a href={href} className="text-[var(--accent)] hover:underline" target="_blank" rel="noopener noreferrer">
             {children}

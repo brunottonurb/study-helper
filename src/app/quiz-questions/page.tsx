@@ -161,15 +161,15 @@ export default function QuizQuestionsPage() {
                           <span className="font-medium text-[var(--ink-light)] min-w-8">
                             {idx + 1}.
                           </span>
-                          <div className="flex-1">
-                            <div className="text-[var(--ink)] font-medium mb-2 prose prose-invert max-w-none">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[var(--ink)] font-medium mb-2 prose prose-invert max-w-none overflow-hidden">
                               <Markdown>{question.question}</Markdown>
                             </div>
                             <details className="cursor-pointer">
                               <summary className="text-sm text-[var(--ink-light)] hover:text-[var(--ink)] transition">
                                 Show answer
                               </summary>
-                              <div className="mt-2 p-3 bg-[var(--code-bg)] text-[var(--ink)] rounded border border-[var(--border)] prose prose-invert max-w-none">
+                              <div className="mt-2 p-3 bg-[var(--code-bg)] text-[var(--ink)] rounded border border-[var(--border)] prose prose-invert max-w-none overflow-hidden">
                                 <Markdown>{question.answer}</Markdown>
                               </div>
                             </details>

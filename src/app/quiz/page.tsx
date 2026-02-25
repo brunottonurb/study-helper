@@ -193,14 +193,14 @@ export default function QuizPage() {
             {currentQuestion.topic.title}
           </div>
           
-          <div className="text-xl font-serif font-semibold text-[var(--ink)] mb-6 leading-relaxed prose prose-invert max-w-none">
+          <div className="text-xl font-serif font-semibold text-[var(--ink)] mb-6 leading-relaxed prose prose-invert max-w-none overflow-hidden">
             <Markdown>{currentQuestion.question}</Markdown>
           </div>
           
           {showAnswer ? (
             <div className="bg-[var(--code-bg)] border border-[var(--border)] p-4">
               <div className="text-xs text-[var(--ink-light)] mb-2 uppercase tracking-wider">Answer</div>
-              <div className="text-[var(--ink)] leading-relaxed prose prose-invert max-w-none">
+              <div className="text-[var(--ink)] leading-relaxed prose prose-invert max-w-none overflow-hidden">
                 <Markdown>{currentQuestion.answer}</Markdown>
               </div>
             </div>
