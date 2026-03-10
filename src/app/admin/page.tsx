@@ -145,6 +145,23 @@ export default function AdminDashboard() {
               materials and code examples.
             </p>
           </Link>
+
+          <Link
+            href="/admin/change-password"
+            className="border border-[var(--border)] p-6 hover:bg-[var(--paper)] transition cursor-pointer group"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">
+                Change Password
+              </h2>
+              <span className="text-[var(--ink-light)] group-hover:translate-x-1 transition-transform">
+                →
+              </span>
+            </div>
+            <p className="text-[var(--ink-light)] text-sm">
+              Update your admin password.
+            </p>
+          </Link>
         </div>
       </div>
     </div>
