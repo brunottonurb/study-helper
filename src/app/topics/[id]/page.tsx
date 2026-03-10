@@ -1,17 +1,12 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CodeBlock, FavoriteButton, Markdown } from '@/components';
-import { getTopicById, getCategoryById, getAllTopics } from '@/lib/data';
+import { getTopicById, getCategoryById } from '@/lib/data';
+
+export const dynamic = 'force-dynamic';
 
 interface TopicPageProps {
   params: Promise<{ id: string }>;
-}
-
-export async function generateStaticParams() {
-  const topics = await getAllTopics();
-  return topics.map((topic) => ({
-    id: topic.id,
-  }));
 }
 
 export async function generateMetadata({ params }: TopicPageProps) {

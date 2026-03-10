@@ -1,17 +1,12 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { TopicCard } from '@/components';
-import { getCategoryById, getTopicsByCategory, getAllCategories } from '@/lib/data';
+import { getCategoryById, getTopicsByCategory } from '@/lib/data';
+
+export const dynamic = 'force-dynamic';
 
 interface CategoryPageProps {
   params: Promise<{ id: string }>;
-}
-
-export async function generateStaticParams() {
-  const categories = await getAllCategories();
-  return categories.map((category) => ({
-    id: category.id,
-  }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
@@ -36,7 +31,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const categoryTopics = await getTopicsByCategory(id);
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="py-12">
       <div className="max-w-4xl mx-auto px-6">
         {/* Breadcrumb */}
         <nav className="flex items-center space-x-2 text-sm text-[var(--ink-light)] mb-8">

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { CategoryCard, TopicCard } from '@/components';
 import { getAllCategories, getAllTopics } from '@/lib/data';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const categories = await getAllCategories();
   const topics = await getAllTopics();
@@ -16,7 +18,7 @@ export default async function Home() {
   const featuredTopics = topics.slice(0, 4);
 
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Hero Section */}
       <section className="py-16 sm:py-24 border-b border-[var(--border)]">
         <div className="max-w-4xl mx-auto px-6">
