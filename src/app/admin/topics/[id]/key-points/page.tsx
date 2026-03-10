@@ -144,7 +144,7 @@ export default function EditKeyPoints() {
   }
 
   return (
-    <div className="min-h-screen py-8">
+    <div className="py-8">
       <div className="max-w-4xl mx-auto px-4">
         <div className="bg-[var(--paper)] border border-[var(--border)] p-6 mb-6">
           <div className="flex justify-between items-center">
@@ -195,7 +195,7 @@ export default function EditKeyPoints() {
 
             {keyPoints.length === 0 ? (
               <div className="text-center py-8 text-[var(--ink-light)]">
-                No key points yet. Click "Add Key Point" to create one.
+                No key points yet. Click &quot;Add Key Point&quot; to create one.
               </div>
             ) : (
               <div className="space-y-4">

@@ -96,7 +96,7 @@ function SearchLoading() {
 
 export default function SearchPage() {
   return (
-    <div className="min-h-screen py-12">
+    <div className="py-12">
       <div className="max-w-4xl mx-auto px-6">
         <Suspense fallback={<SearchLoading />}>
           <SearchResults />

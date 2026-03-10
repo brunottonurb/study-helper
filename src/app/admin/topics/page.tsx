@@ -106,7 +106,7 @@ export default function TopicsManagement() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="bg-[var(--paper)] border border-[var(--border)] p-6 mb-8">

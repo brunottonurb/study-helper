@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { getAllTopics, searchTopics } from '@/lib/data';
 import { prisma } from '@/lib/prisma';
+import type { KeyPoint, CodeExample, QuizQuestion, Topic } from '@/types';
 
 // GET /api/topics - Get all topics or search topics
 export async function GET(request: NextRequest) {
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
     if (searchQuery) {
       topics = await searchTopics(searchQuery);
       if (categoryId) {
-        topics = topics.filter((t: { categoryId: string }) => t.categoryId === categoryId);
+        topics = topics.filter((t: Topic) => t.category === categoryId);
       }
     } else if (categoryId) {
       topics = await prisma.topic.findMany({
@@ -76,14 +77,14 @@ export async function POST(request: NextRequest) {
         confidence,
         lastReviewed,
         keyPoints: {
-          create: keyPoints?.map((kp: any, index: number) => ({
+          create: keyPoints?.map((kp: KeyPoint, index: number) => ({
             title: kp.title,
             description: kp.description,
             order: index,
           })) || [],
         },
         codeExamples: {
-          create: codeExamples?.map((ce: any, index: number) => ({
+          create: codeExamples?.map((ce: CodeExample, index: number) => ({
             title: ce.title,
             language: ce.language,
             code: ce.code,
@@ -92,7 +93,7 @@ export async function POST(request: NextRequest) {
           })) || [],
         },
         quizQuestions: {
-          create: quizQuestions?.map((qq: any, index: number) => ({
+          create: quizQuestions?.map((qq: QuizQuestion, index: number) => ({
             question: qq.question,
             answer: qq.answer,
             order: index,
