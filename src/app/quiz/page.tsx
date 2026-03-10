@@ -43,11 +43,13 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export default function QuizPage() {
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
+  const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [isComplete, setIsComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [quizStarted, setQuizStarted] = useState(false);
   const { addQuizResult } = useUserData();
 
   // Load topics and generate questions
@@ -65,7 +67,13 @@ export default function QuizPage() {
       });
   }, []);
 
-  const currentQuestion = allQuestions[currentIndex];
+  const currentQuestion = quizQuestions[currentIndex];
+
+  const startQuiz = (count: number) => {
+    const selected = shuffleArray(allQuestions).slice(0, count);
+    setQuizQuestions(selected);
+    setQuizStarted(true);
+  };
 
   const handleAnswer = (knew: boolean) => {
     if (!currentQuestion) return;
@@ -84,7 +92,7 @@ export default function QuizPage() {
       setScore(prev => ({ ...prev, incorrect: prev.incorrect + 1 }));
     }
 
-    if (currentIndex + 1 >= allQuestions.length) {
+    if (currentIndex + 1 >= quizQuestions.length) {
       setIsComplete(true);
     } else {
       setCurrentIndex(prev => prev + 1);
@@ -93,28 +101,18 @@ export default function QuizPage() {
   };
 
   const resetQuiz = () => {
-    setIsLoading(true);
-    fetch('/api/topics')
-      .then(res => res.json())
-      .then((topics: Topic[]) => {
-        const questions = generateQuestions(topics);
-        setAllQuestions(shuffleArray(questions));
-        setCurrentIndex(0);
-        setShowAnswer(false);
-        setScore({ correct: 0, incorrect: 0 });
-        setIsComplete(false);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.error('Error loading quiz:', err);
-        setIsLoading(false);
-      });
+    setQuizQuestions([]);
+    setCurrentIndex(0);
+    setShowAnswer(false);
+    setScore({ correct: 0, incorrect: 0 });
+    setIsComplete(false);
+    setQuizStarted(false);
   };
 
   // Show loading state while questions are being loaded
-  if (isLoading || allQuestions.length === 0) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen py-12">
+      <div className="py-12">
         <div className="max-w-xl mx-auto px-6">
           <div className="text-center text-[var(--ink-light)]">
             Loading quiz...
@@ -124,11 +122,74 @@ export default function QuizPage() {
     );
   }
 
+  if (allQuestions.length === 0) {
+    return (
+      <div className="py-12">
+        <div className="max-w-xl mx-auto px-6">
+          <div className="text-center">
+            <div className="text-4xl mb-6 font-serif">No questions yet</div>
+            <p className="text-[var(--ink-light)] mb-8">
+              There are no quiz questions available.
+            </p>
+            <Link
+              href="/categories"
+              className="px-5 py-2.5 bg-[var(--ink)] hover:opacity-80 text-[var(--background)] text-sm tracking-wide transition-colors"
+            >
+              Browse Subjects
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!quizStarted) {
+    const presets = [5, 10, 20, allQuestions.length].filter(
+      (v, i, a) => v <= allQuestions.length && a.indexOf(v) === i
+    );
+
+    return (
+      <div className="py-12">
+        <div className="max-w-xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <h1 className="text-2xl font-serif font-bold text-[var(--ink)] mb-3">
+              Start a Quiz
+            </h1>
+            <p className="text-[var(--ink-light)]">
+              {allQuestions.length} questions available. How many would you like?
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {presets.map((count) => (
+              <button
+                key={count}
+                onClick={() => startQuiz(count)}
+                className="py-4 bg-[var(--paper)] hover:bg-[var(--code-bg)] border border-[var(--border)] text-[var(--ink)] font-serif text-lg transition-colors cursor-pointer"
+              >
+                {count === allQuestions.length ? `All (${count})` : count}
+              </button>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/"
+              className="text-sm text-[var(--ink-light)] hover:text-[var(--ink)] transition-colors"
+            >
+              ← Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isComplete) {
-    const percentage = Math.round((score.correct / allQuestions.length) * 100);
+    const percentage = Math.round((score.correct / quizQuestions.length) * 100);
     
     return (
-      <div className="min-h-screen py-12">
+      <div className="py-12">
         <div className="max-w-xl mx-auto px-6">
           <div className="text-center">
             <div className="text-4xl mb-6 font-serif">
@@ -136,7 +197,7 @@ export default function QuizPage() {
             </div>
             <h1 className="text-2xl font-serif font-bold text-[var(--ink)] mb-4">Quiz Complete</h1>
             <p className="text-lg text-[var(--ink-light)] mb-8">
-              You scored {score.correct} out of {allQuestions.length} ({percentage}%)
+              You scored {score.correct} out of {quizQuestions.length} ({percentage}%)
             </p>
             
             <div className="grid grid-cols-2 gap-4 mb-8">
@@ -171,18 +232,18 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="py-12">
       <div className="max-w-xl mx-auto px-6">
         {/* Progress */}
         <div className="mb-8">
           <div className="flex items-center justify-between text-sm text-[var(--ink-light)] mb-2">
-            <span>Question {currentIndex + 1} of {allQuestions.length}</span>
+            <span>Question {currentIndex + 1} of {quizQuestions.length}</span>
             <span>{score.correct} correct</span>
           </div>
           <div className="h-1 bg-[var(--border)] overflow-hidden">
             <div
               className="h-full bg-[var(--ink)] transition-all duration-300"
-              style={{ width: `${((currentIndex) / allQuestions.length) * 100}%` }}
+              style={{ width: `${((currentIndex) / quizQuestions.length) * 100}%` }}
             />
           </div>
         </div>
