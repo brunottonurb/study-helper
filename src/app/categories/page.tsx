@@ -4,7 +4,7 @@ import { getAllCategories, getAllTopics } from '@/lib/data';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Subjects - Study Notes',
+  title: 'Subjects - Study Helper',
   description: 'Browse all study subjects',
 };
 

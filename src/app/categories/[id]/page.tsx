@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   if (!category) return { title: 'Subject Not Found' };
   
   return {
-    title: `${category.name} - Study Notes`,
+    title: `${category.name} - Study Helper`,
     description: category.description,
   };
 }

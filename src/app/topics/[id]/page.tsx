@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: TopicPageProps) {
   if (!topic) return { title: 'Topic Not Found' };
   
   return {
-    title: `${topic.title} - Study Notes`,
+    title: `${topic.title} - Study Helper`,
     description: topic.description,
   };
 }

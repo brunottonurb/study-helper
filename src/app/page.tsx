@@ -24,7 +24,7 @@ export default async function Home() {
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center">
             <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[var(--ink)] mb-6 leading-tight">
-              Study Notes
+              Study Helper
             </h1>
             <p className="text-lg text-[var(--ink-light)] max-w-xl mx-auto mb-8 leading-relaxed">
               A personal collection of notes and concepts from my computer science studies. 
@@ -124,7 +124,7 @@ export default async function Home() {
       <footer className="py-8 border-t border-[var(--border)]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="font-serif text-[var(--ink)]">Study Notes</span>
+            <span className="font-serif text-[var(--ink)]">Study Helper</span>
             <p className="text-[var(--ink-light)] text-sm">
               Vibe coded with Next.js &amp; TypeScript
             </p>
