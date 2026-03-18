@@ -140,6 +140,12 @@ export default function CategoriesManagement() {
                 </div>
                 <div className="flex gap-2 ml-4">
                   <Link
+                    href={`/admin/topics?categoryId=${category.id}&from=categories`}
+                    className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:bg-[var(--paper)] transition cursor-pointer text-sm"
+                  >
+                    View Topics
+                  </Link>
+                  <Link
                     href={`/admin/categories/${category.id}`}
                     className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:bg-[var(--paper)] transition cursor-pointer text-sm"
                   >
