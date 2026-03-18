@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import MarkdownEditor from '@/components/admin/MarkdownEditor';
 
 interface QuizQuestion {
   question: string;
@@ -195,7 +196,7 @@ export default function EditQuizQuestions() {
 
             {quizQuestions.length === 0 ? (
               <div className="text-center py-8 text-[var(--ink-light)]">
-                No quiz questions yet. Click "Add Question" to create one.
+                No quiz questions yet. Click &quot;Add Question&quot; to create one.
               </div>
             ) : (
               <div className="space-y-4">
@@ -213,19 +214,23 @@ export default function EditQuizQuestions() {
                         Remove
                       </button>
                     </div>
-                    <textarea
-                      placeholder="Question"
-                      value={qq.question}
-                      onChange={(e) => updateQuizQuestion(index, 'question', e.target.value)}
-                      rows={2}
-                      className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                    />
-                    <textarea
-                      placeholder="Answer"
+                    <div className="mb-2">
+                      <MarkdownEditor
+                        id={`quiz-question-${index}`}
+                        label="Question"
+                        value={qq.question}
+                        onChange={(value) => updateQuizQuestion(index, 'question', value)}
+                        rows={2}
+                        placeholder="Question"
+                      />
+                    </div>
+                    <MarkdownEditor
+                      id={`quiz-answer-${index}`}
+                      label="Answer"
                       value={qq.answer}
-                      onChange={(e) => updateQuizQuestion(index, 'answer', e.target.value)}
+                      onChange={(value) => updateQuizQuestion(index, 'answer', value)}
                       rows={3}
-                      className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
+                      placeholder="Answer"
                     />
                   </div>
                 ))}

@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import MarkdownEditor from '@/components/admin/MarkdownEditor';
 
 interface Category {
   id: string;
@@ -252,17 +253,14 @@ export default function NewTopic() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                Description *
-              </label>
-              <textarea
+              <MarkdownEditor
                 id="description"
                 name="description"
+                label="Description *"
                 value={formData.description}
-                onChange={handleChange}
+                onChange={(value) => setFormData({ ...formData, description: value })}
                 required
                 rows={3}
-                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
               />
             </div>
 
@@ -356,12 +354,13 @@ export default function NewTopic() {
                     onChange={(e) => updateKeyPoint(index, 'title', e.target.value)}
                     className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                   />
-                  <textarea
-                    placeholder="Description"
+                  <MarkdownEditor
+                    id={`key-point-description-${index}`}
+                    label="Description"
                     value={kp.description}
-                    onChange={(e) => updateKeyPoint(index, 'description', e.target.value)}
+                    onChange={(value) => updateKeyPoint(index, 'description', value)}
                     rows={2}
-                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
+                    placeholder="Description"
                   />
                 </div>
               ))}
@@ -455,19 +454,23 @@ export default function NewTopic() {
                       Remove
                     </button>
                   </div>
-                  <textarea
-                    placeholder="Question"
-                    value={qq.question}
-                    onChange={(e) => updateQuizQuestion(index, 'question', e.target.value)}
-                    rows={2}
-                    className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                  <textarea
-                    placeholder="Answer"
+                  <div className="mb-2">
+                    <MarkdownEditor
+                      id={`quiz-question-${index}`}
+                      label="Question"
+                      value={qq.question}
+                      onChange={(value) => updateQuizQuestion(index, 'question', value)}
+                      rows={2}
+                      placeholder="Question"
+                    />
+                  </div>
+                  <MarkdownEditor
+                    id={`quiz-answer-${index}`}
+                    label="Answer"
                     value={qq.answer}
-                    onChange={(e) => updateQuizQuestion(index, 'answer', e.target.value)}
+                    onChange={(value) => updateQuizQuestion(index, 'answer', value)}
                     rows={3}
-                    className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
+                    placeholder="Answer"
                   />
                 </div>
               ))}

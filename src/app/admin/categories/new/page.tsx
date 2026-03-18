@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import MarkdownEditor from '@/components/admin/MarkdownEditor';
 
 export default function NewCategory() {
   const { status } = useSession();
@@ -120,18 +121,15 @@ export default function NewCategory() {
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-[var(--ink)] mb-2">
-              Description *
-            </label>
-            <textarea
+            <MarkdownEditor
               id="description"
               name="description"
+              label="Description *"
               value={formData.description}
-              onChange={handleChange}
+              onChange={(value) => setFormData({ ...formData, description: value })}
               required
               rows={3}
               placeholder="Brief description of this category"
-              className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
             />
           </div>
 

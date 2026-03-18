@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import MarkdownEditor from '@/components/admin/MarkdownEditor';
 
 interface KeyPoint {
   title: string;
@@ -220,12 +221,13 @@ export default function EditKeyPoints() {
                       onChange={(e) => updateKeyPoint(index, 'title', e.target.value)}
                       className="w-full px-4 py-2 mb-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
                     />
-                    <textarea
-                      placeholder="Description"
+                    <MarkdownEditor
+                      id={`key-point-description-${index}`}
+                      label="Description"
                       value={kp.description}
-                      onChange={(e) => updateKeyPoint(index, 'description', e.target.value)}
+                      onChange={(value) => updateKeyPoint(index, 'description', value)}
                       rows={3}
-                      className="w-full px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
+                      placeholder="Description"
                     />
                   </div>
                 ))}

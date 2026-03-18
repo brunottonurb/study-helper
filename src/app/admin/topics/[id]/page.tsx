@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import MarkdownEditor from '@/components/admin/MarkdownEditor';
 
 interface Category {
   id: string;
@@ -198,17 +199,14 @@ export default function EditTopic() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                Description *
-              </label>
-              <textarea
+              <MarkdownEditor
                 id="description"
                 name="description"
+                label="Description *"
                 value={formData.description}
-                onChange={handleChange}
+                onChange={(value) => setFormData({ ...formData, description: value })}
                 required
                 rows={3}
-                className="w-full px-4 py-3 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
               />
             </div>
 
