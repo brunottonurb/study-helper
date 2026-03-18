@@ -10,7 +10,7 @@ export default function AdminLayout({
       </div>
 
       <div className="relative">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent_0,transparent_20px,rgba(255,140,0,0.04)_20px,rgba(255,140,0,0.04)_21px)] bg-[length:21px_21px]" />
+        <div className="pointer-events-none absolute inset-0" />
         <div className="relative">{children}</div>
       </div>
     </div>
