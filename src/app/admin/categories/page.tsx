@@ -76,7 +76,7 @@ export default function CategoriesManagement() {
 
   return (
     <div className="min-h-screen py-12">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="border-b border-[var(--border)] pb-6 mb-8">
           <div className="flex justify-between items-center">

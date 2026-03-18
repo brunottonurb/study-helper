@@ -21,7 +21,7 @@ export default async function CategoriesPage() {
 
   return (
     <div className="py-12">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="mb-10">
           <h1 className="text-2xl font-serif font-bold text-[var(--ink)] mb-3">All Subjects</h1>
           <p className="text-[var(--ink-light)] leading-relaxed">
