@@ -12,7 +12,6 @@ A personal study helper web application to document and review what I've learned
 - **📝 Topic Pages** - Detailed pages with key points and code examples
 - **🔍 Search** - Quickly find topics across your entire knowledge base
 - **🧠 Quiz Mode** - Test yourself with flashcard-style questions
-- **🌙 Dark Theme** - Easy on the eyes for long reading sessions
 - **✏️ Admin Panel** - Full CRUD interface for managing categories, topics, and content
 - **💾 Database Storage** - Content stored in SQLite with Prisma ORM
 - **🔐 Authentication** - Secure admin login with NextAuth.js
