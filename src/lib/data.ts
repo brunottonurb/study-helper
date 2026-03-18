@@ -5,7 +5,6 @@ import type {
   KeyPoint as PrismaKeyPoint,
   CodeExample as PrismaCodeExample,
   QuizQuestion as PrismaQuizQuestion,
-  Resource as PrismaResource,
   Category as PrismaCategory
 } from '@prisma/client';
 
@@ -13,7 +12,6 @@ type TopicWithRelations = PrismaTopic & {
   keyPoints: PrismaKeyPoint[];
   codeExamples: PrismaCodeExample[];
   quizQuestions: PrismaQuizQuestion[];
-  resources: PrismaResource[];
 };
 
 // Transform database results to match the existing Topic interface
@@ -40,7 +38,6 @@ function transformTopicFromDB(dbTopic: TopicWithRelations): Topic {
       question: qq.question,
       answer: qq.answer,
     })),
-    resources: dbTopic.resources.map((r) => r.url),
   };
 }
 
@@ -74,7 +71,6 @@ export async function getAllTopics(): Promise<Topic[]> {
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
-      resources: { orderBy: { order: 'asc' } },
     },
     orderBy: { title: 'asc' },
   });
@@ -88,7 +84,6 @@ export async function getTopicById(id: string): Promise<Topic | null> {
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
-      resources: { orderBy: { order: 'asc' } },
     },
   });
   return topic ? transformTopicFromDB(topic) : null;
@@ -101,7 +96,6 @@ export async function getTopicsByCategory(categoryId: string): Promise<Topic[]> 
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
-      resources: { orderBy: { order: 'asc' } },
     },
     orderBy: { title: 'asc' },
   });
@@ -121,7 +115,6 @@ export async function searchTopics(query: string): Promise<Topic[]> {
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
-      resources: { orderBy: { order: 'asc' } },
     },
     orderBy: { title: 'asc' },
   });

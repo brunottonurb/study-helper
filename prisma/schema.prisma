@@ -41,7 +41,6 @@ model Topic {
   keyPoints    KeyPoint[]
   codeExamples CodeExample[]
   quizQuestions QuizQuestion[]
-  resources    Resource[]
 }
 
 model KeyPoint {
@@ -79,12 +78,4 @@ model QuizQuestion {
   topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
 }
 
-model Resource {
-  id        String   @id @default(cuid())
-  topicId   String
-  url       String
-  order     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
-}
+

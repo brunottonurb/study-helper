@@ -44,7 +44,6 @@ export default function NewTopic() {
     keyPoints: [] as KeyPoint[],
     codeExamples: [] as CodeExample[],
     quizQuestions: [] as QuizQuestion[],
-    resources: [] as string[],
   });
 
   useEffect(() => {
@@ -162,26 +161,6 @@ export default function NewTopic() {
     const updated = [...formData.quizQuestions];
     updated[index] = { ...updated[index], [field]: value };
     setFormData({ ...formData, quizQuestions: updated });
-  };
-
-  const addResource = () => {
-    setFormData({
-      ...formData,
-      resources: [...formData.resources, ''],
-    });
-  };
-
-  const removeResource = (index: number) => {
-    setFormData({
-      ...formData,
-      resources: formData.resources.filter((_, i) => i !== index),
-    });
-  };
-
-  const updateResource = (index: number, value: string) => {
-    const updated = [...formData.resources];
-    updated[index] = value;
-    setFormData({ ...formData, resources: updated });
   };
 
   if (status === 'loading') {
@@ -472,40 +451,6 @@ export default function NewTopic() {
                     rows={3}
                     placeholder="Answer"
                   />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Resources */}
-          <div className="bg-[var(--paper)] border border-[var(--border)] p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-[var(--ink)]">Resources</h2>
-              <button
-                type="button"
-                onClick={addResource}
-                className="px-4 py-2 bg-[var(--ink)] text-[var(--background)] hover:opacity-80 transition cursor-pointer"
-              >
-                + Add Resource
-              </button>
-            </div>
-            <div className="space-y-3">
-              {formData.resources.map((resource, index) => (
-                <div key={index} className="flex gap-2">
-                  <input
-                    type="url"
-                    placeholder="https://..."
-                    value={resource}
-                    onChange={(e) => updateResource(index, e.target.value)}
-                    className="flex-1 px-4 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--ink)]"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeResource(index)}
-                    className="px-4 py-2 border border-[var(--border)] text-[var(--ink)] hover:opacity-80 transition cursor-pointer"
-                  >
-                    Remove
-                  </button>
                 </div>
               ))}
             </div>

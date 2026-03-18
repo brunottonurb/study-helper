@@ -67,7 +67,6 @@ async function main() {
     await prisma.keyPoint.deleteMany({ where: { topicId: topic.id } });
     await prisma.codeExample.deleteMany({ where: { topicId: topic.id } });
     await prisma.quizQuestion.deleteMany({ where: { topicId: topic.id } });
-    await prisma.resource.deleteMany({ where: { topicId: topic.id } });
 
     // Seed key points
     for (let i = 0; i < topic.keyPoints.length; i++) {
@@ -109,18 +108,7 @@ async function main() {
       }
     }
 
-    // Seed resources
-    if (topic.resources) {
-      for (let i = 0; i < topic.resources.length; i++) {
-        await prisma.resource.create({
-          data: {
-            topicId: topic.id,
-            url: topic.resources[i],
-            order: i,
-          },
-        });
-      }
-    }
+
   }
   console.log(`Seeded ${topics.length} topics with all relations`);
 

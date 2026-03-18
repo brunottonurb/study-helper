@@ -57,7 +57,6 @@ export async function POST(request: NextRequest) {
       keyPoints,
       codeExamples,
       quizQuestions,
-      resources,
     } = body;
 
     if (!id || !title || !description || !categoryId || !confidence) {
@@ -99,18 +98,11 @@ export async function POST(request: NextRequest) {
             order: index,
           })) || [],
         },
-        resources: {
-          create: resources?.map((url: string, index: number) => ({
-            url,
-            order: index,
-          })) || [],
-        },
       },
       include: {
         keyPoints: true,
         codeExamples: true,
         quizQuestions: true,
-        resources: true,
         category: true,
       },
     });

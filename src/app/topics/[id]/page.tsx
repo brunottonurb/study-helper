@@ -107,22 +107,6 @@ export default async function TopicPage({ params }: TopicPageProps) {
           </section>
         )}
 
-        {/* Resources */}
-        {topic.resources && topic.resources.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-xl font-serif font-semibold text-[var(--ink)] mb-5 pb-2 border-b border-[var(--border)]">
-              References
-            </h2>
-            <ul className="space-y-2">
-              {topic.resources.map((resource, idx) => (
-                <li key={idx} className="flex items-center text-[var(--ink-light)] text-sm">
-                  <span className="mr-3 text-[var(--ink-light)]">•</span>
-                  {resource}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
 
         {/* Navigation */}
         <div className="border-t border-[var(--border)] pt-8 mt-10">

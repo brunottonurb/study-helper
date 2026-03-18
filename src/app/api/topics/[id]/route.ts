@@ -15,7 +15,6 @@ export async function GET(
         keyPoints: { orderBy: { order: 'asc' } },
         codeExamples: { orderBy: { order: 'asc' } },
         quizQuestions: { orderBy: { order: 'asc' } },
-        resources: { orderBy: { order: 'asc' } },
         category: true,
       },
     });
@@ -57,14 +56,12 @@ export async function PUT(
       keyPoints,
       codeExamples,
       quizQuestions,
-      resources,
     } = body;
 
     // Delete existing relations
     await prisma.keyPoint.deleteMany({ where: { topicId: id } });
     await prisma.codeExample.deleteMany({ where: { topicId: id } });
     await prisma.quizQuestion.deleteMany({ where: { topicId: id } });
-    await prisma.resource.deleteMany({ where: { topicId: id } });
 
     // Update topic with new relations
     const topic = await prisma.topic.update({
@@ -99,18 +96,11 @@ export async function PUT(
             order: index,
           })) || [],
         },
-        resources: {
-          create: resources?.map((url: string, index: number) => ({
-            url,
-            order: index,
-          })) || [],
-        },
       },
       include: {
         keyPoints: { orderBy: { order: 'asc' } },
         codeExamples: { orderBy: { order: 'asc' } },
         quizQuestions: { orderBy: { order: 'asc' } },
-        resources: { orderBy: { order: 'asc' } },
         category: true,
       },
     });
