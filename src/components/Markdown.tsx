@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 
 interface MarkdownProps {
@@ -10,7 +11,7 @@ export default function Markdown({ children, className = '' }: MarkdownProps) {
   return (
     <div className={className}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkBreaks]}
         components={{
         // Inline elements
         strong: ({ children }) => <strong className="font-semibold text-[var(--ink)]">{children}</strong>,
@@ -31,7 +32,7 @@ export default function Markdown({ children, className = '' }: MarkdownProps) {
           </a>
         ),
         // Block elements
-        p: ({ children }) => <span className="inline">{children}</span>,
+        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
         ul: ({ children }) => <ul className="list-disc list-inside space-y-1">{children}</ul>,
         ol: ({ children }) => <ol className="list-decimal list-inside space-y-1">{children}</ol>,
         li: ({ children }) => <li className="text-sm">{children}</li>,
