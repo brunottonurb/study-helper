@@ -12,6 +12,7 @@ type TopicWithRelations = PrismaTopic & {
   keyPoints: PrismaKeyPoint[];
   codeExamples: PrismaCodeExample[];
   quizQuestions: PrismaQuizQuestion[];
+  category?: PrismaCategory;
 };
 
 // Transform database results to match the existing Topic interface
@@ -21,7 +22,13 @@ function transformTopicFromDB(dbTopic: TopicWithRelations): Topic {
     title: dbTopic.title,
     description: dbTopic.description,
     icon: dbTopic.icon || undefined,
-    category: dbTopic.categoryId,
+    categoryId: dbTopic.categoryId,
+    category: dbTopic.category
+      ? {
+          id: dbTopic.category.id,
+          name: dbTopic.category.name,
+        }
+      : undefined,
     confidence: dbTopic.confidence as 'beginner' | 'intermediate' | 'advanced' | 'expert',
     lastReviewed: dbTopic.lastReviewed || undefined,
     keyPoints: dbTopic.keyPoints.map((kp) => ({
@@ -68,6 +75,7 @@ export async function getCategoryById(id: string): Promise<Category | null> {
 export async function getAllTopics(): Promise<Topic[]> {
   const topics = await prisma.topic.findMany({
     include: {
+      category: true,
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
@@ -81,6 +89,7 @@ export async function getTopicById(id: string): Promise<Topic | null> {
   const topic = await prisma.topic.findUnique({
     where: { id },
     include: {
+      category: true,
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
@@ -93,6 +102,7 @@ export async function getTopicsByCategory(categoryId: string): Promise<Topic[]> 
   const topics = await prisma.topic.findMany({
     where: { categoryId },
     include: {
+      category: true,
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },
@@ -112,6 +122,7 @@ export async function searchTopics(query: string): Promise<Topic[]> {
       ],
     },
     include: {
+      category: true,
       keyPoints: { orderBy: { order: 'asc' } },
       codeExamples: { orderBy: { order: 'asc' } },
       quizQuestions: { orderBy: { order: 'asc' } },

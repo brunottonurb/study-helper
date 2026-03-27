@@ -35,7 +35,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     notFound();
   }
 
-  const category = await getCategoryById(topic.category);
+  const category = await getCategoryById(topic.categoryId);
 
   return (
     <div className="min-h-screen py-12">
@@ -172,7 +172,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
         {/* Navigation */}
         <div className="border-t border-[var(--border)] pt-8 mt-10">
           <Link
-            href={`/categories/${topic.category}`}
+            href={`/categories/${topic.categoryId}`}
             className="inline-flex items-center text-[var(--accent)] hover:underline text-sm"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

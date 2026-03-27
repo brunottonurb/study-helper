@@ -16,7 +16,7 @@ interface Topic {
   title: string;
   categoryId: string;
   confidence: string;
-  category: Category;
+  category?: Category;
 }
 
 export default function TopicsManagement() {
@@ -32,6 +32,14 @@ export default function TopicsManagement() {
   const [selectedCategory, setSelectedCategory] = useState<string>(categoryIdParam);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const getCategoryName = (topic: Topic) => {
+    if (topic.category?.name) {
+      return topic.category.name;
+    }
+
+    return categories.find((category) => category.id === topic.categoryId)?.name;
+  };
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -199,9 +207,9 @@ export default function TopicsManagement() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    {topic.category && (
+                    {getCategoryName(topic) && (
                       <span className="text-xs border border-[var(--border)] text-[var(--ink)] px-2 py-1">
-                        {topic.category.name}
+                        {getCategoryName(topic)}
                       </span>
                     )}
                     <span className={`text-xs px-2 py-1 ${getConfidenceBadgeColor(topic.confidence)}`}>

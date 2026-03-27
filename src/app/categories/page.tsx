@@ -15,7 +15,7 @@ export default async function CategoriesPage() {
   ]);
 
   const topicCountByCategory = topics.reduce((acc, topic) => {
-    acc[topic.category] = (acc[topic.category] || 0) + 1;
+    acc[topic.categoryId] = (acc[topic.categoryId] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 

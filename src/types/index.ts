@@ -15,12 +15,18 @@ export interface QuizQuestion {
   answer: string;
 }
 
+export interface TopicCategory {
+  id: string;
+  name: string;
+}
+
 export interface Topic {
   id: string;
   title: string;
   description: string;
   icon?: string;
-  category: string;
+  categoryId: string;
+  category?: TopicCategory;
   keyPoints: KeyPoint[];
   codeExamples: CodeExample[];
   quizQuestions?: QuizQuestion[];

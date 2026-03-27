@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     if (searchQuery) {
       topics = await searchTopics(searchQuery);
       if (categoryId) {
-        topics = topics.filter((t: Topic) => t.category === categoryId);
+        topics = topics.filter((t: Topic) => t.categoryId === categoryId);
       }
     } else if (categoryId) {
       topics = await getTopicsByCategory(categoryId);

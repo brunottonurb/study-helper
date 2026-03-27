@@ -18,7 +18,7 @@ interface Topic {
   id: string;
   title: string;
   categoryId: string;
-  category: Category;
+  category?: Category;
   quizQuestions: QuizQuestionData[];
 }
 
@@ -135,7 +135,7 @@ export default function QuizQuestionsPage() {
                       {topic.title}
                     </h2>
                     <p className="text-sm text-[var(--ink-light)]">
-                      {topic.category.name} •{' '}
+                      {topic.category?.name ?? 'Uncategorized'} •{' '}
                       {topic.quizQuestions?.length || 0} question
                       {topic.quizQuestions?.length !== 1 ? 's' : ''}
                     </p>
