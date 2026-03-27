@@ -40,3 +40,38 @@ export interface Category {
   description: string;
   icon: string;
 }
+
+export interface SearchTopicRef {
+  id: string;
+  title: string;
+}
+
+export interface KeyPointSearchResult {
+  id: string;
+  title: string;
+  description: string;
+  topic: SearchTopicRef;
+}
+
+export interface CodeExampleSearchResult {
+  id: string;
+  title: string;
+  language: string;
+  code: string;
+  explanation?: string;
+  topic: SearchTopicRef;
+}
+
+export interface QuizQuestionSearchResult {
+  id: string;
+  question: string;
+  answer: string;
+  topic: SearchTopicRef;
+}
+
+export interface SearchResults {
+  topics: Topic[];
+  keyPoints: KeyPointSearchResult[];
+  codeExamples: CodeExampleSearchResult[];
+  quizQuestions: QuizQuestionSearchResult[];
+}

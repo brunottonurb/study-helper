@@ -58,7 +58,7 @@ export default function Header() {
                       placeholder="Search notes..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-36 lg:w-48 xl:w-56 px-4 py-2 pl-9 bg-[var(--paper)] border border-[var(--border)] rounded text-[var(--ink)] placeholder-[var(--ink-light)] text-sm focus:outline-none focus:border-[var(--accent)] transition-colors"
+                      className="w-36 lg:w-48 xl:w-56 px-4 py-2 pl-9 bg-[var(--paper)] border border-[var(--border)] text-[var(--ink)] placeholder-[var(--ink-light)] text-sm focus:outline-none focus:border-[var(--accent)] transition-colors"
                     />
                     <svg
                       className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--ink-light)]"
@@ -154,7 +154,7 @@ export default function Header() {
                       placeholder="Search notes..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-4 py-2 pl-9 bg-[var(--paper)] border border-[var(--border)] rounded text-[var(--ink)] placeholder-[var(--ink-light)] text-sm focus:outline-none focus:border-[var(--accent)] transition-colors"
+                      className="w-full px-4 py-2 pl-9 bg-[var(--paper)] border border-[var(--border)] text-[var(--ink)] placeholder-[var(--ink-light)] text-sm focus:outline-none focus:border-[var(--accent)] transition-colors"
                     />
                     <svg
                       className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--ink-light)]"

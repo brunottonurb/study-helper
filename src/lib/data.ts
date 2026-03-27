@@ -1,5 +1,12 @@
 import { prisma } from './prisma';
-import type { Category, Topic } from '@/types';
+import type {
+  Category,
+  Topic,
+  SearchResults,
+  KeyPointSearchResult,
+  CodeExampleSearchResult,
+  QuizQuestionSearchResult,
+} from '@/types';
 import type { 
   Topic as PrismaTopic, 
   KeyPoint as PrismaKeyPoint,
@@ -113,12 +120,17 @@ export async function getTopicsByCategory(categoryId: string): Promise<Topic[]> 
 }
 
 export async function searchTopics(query: string): Promise<Topic[]> {
-  const lowerQuery = query.toLowerCase();
+  const searchTerm = query.trim();
+
+  if (!searchTerm) {
+    return [];
+  }
+
   const topics = await prisma.topic.findMany({
     where: {
       OR: [
-        { title: { contains: lowerQuery } },
-        { description: { contains: lowerQuery } },
+        { title: { contains: searchTerm } },
+        { description: { contains: searchTerm } },
       ],
     },
     include: {
@@ -130,4 +142,121 @@ export async function searchTopics(query: string): Promise<Topic[]> {
     orderBy: { title: 'asc' },
   });
   return topics.map(transformTopicFromDB);
+}
+
+export async function searchAllContent(query: string): Promise<SearchResults> {
+  const searchTerm = query.trim();
+
+  if (!searchTerm) {
+    return {
+      topics: [],
+      keyPoints: [],
+      codeExamples: [],
+      quizQuestions: [],
+    };
+  }
+
+  const [topics, keyPoints, codeExamples, quizQuestions] = await Promise.all([
+    prisma.topic.findMany({
+      where: {
+        OR: [
+          { title: { contains: searchTerm } },
+          { description: { contains: searchTerm } },
+        ],
+      },
+      include: {
+        category: true,
+        keyPoints: { orderBy: { order: 'asc' } },
+        codeExamples: { orderBy: { order: 'asc' } },
+        quizQuestions: { orderBy: { order: 'asc' } },
+      },
+      orderBy: { title: 'asc' },
+    }),
+    prisma.keyPoint.findMany({
+      where: {
+        OR: [
+          { title: { contains: searchTerm } },
+          { description: { contains: searchTerm } },
+        ],
+      },
+      include: {
+        topic: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+      orderBy: [{ topic: { title: 'asc' } }, { order: 'asc' }],
+    }),
+    prisma.codeExample.findMany({
+      where: {
+        OR: [
+          { title: { contains: searchTerm } },
+          { language: { contains: searchTerm } },
+          { code: { contains: searchTerm } },
+          { explanation: { contains: searchTerm } },
+        ],
+      },
+      include: {
+        topic: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+      orderBy: [{ topic: { title: 'asc' } }, { order: 'asc' }],
+    }),
+    prisma.quizQuestion.findMany({
+      where: {
+        OR: [
+          { question: { contains: searchTerm } },
+          { answer: { contains: searchTerm } },
+        ],
+      },
+      include: {
+        topic: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+      orderBy: [{ topic: { title: 'asc' } }, { order: 'asc' }],
+    }),
+  ]);
+
+  return {
+    topics: topics.map(transformTopicFromDB),
+    keyPoints: keyPoints.map<KeyPointSearchResult>((kp) => ({
+      id: kp.id,
+      title: kp.title,
+      description: kp.description,
+      topic: {
+        id: kp.topic.id,
+        title: kp.topic.title,
+      },
+    })),
+    codeExamples: codeExamples.map<CodeExampleSearchResult>((ce) => ({
+      id: ce.id,
+      title: ce.title,
+      language: ce.language,
+      code: ce.code,
+      explanation: ce.explanation || undefined,
+      topic: {
+        id: ce.topic.id,
+        title: ce.topic.title,
+      },
+    })),
+    quizQuestions: quizQuestions.map<QuizQuestionSearchResult>((qq) => ({
+      id: qq.id,
+      question: qq.question,
+      answer: qq.answer,
+      topic: {
+        id: qq.topic.id,
+        title: qq.topic.title,
+      },
+    })),
+  };
 }

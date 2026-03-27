@@ -97,6 +97,26 @@ code {
     0 4px 12px rgba(0,0,0,0.05);
 }
 
+/* Search preview fade-out for long content snippets */
+.search-preview-fade {
+  --fade-max-height: 8.5rem;
+  --fade-overlay-height: 2.5rem;
+  position: relative;
+  max-height: var(--fade-max-height);
+  overflow: hidden;
+}
+
+.search-preview-fade::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--fade-overlay-height);
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+}
+
 [data-theme="dark"] .paper-shadow {
   box-shadow: 
     0 1px 3px rgba(0,0,0,0.3),
