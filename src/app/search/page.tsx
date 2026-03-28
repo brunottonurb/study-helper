@@ -13,6 +13,14 @@ const EMPTY_RESULTS: SearchResultsData = {
   quizQuestions: [],
 };
 
+const getTopicHref = (topicId: string, targetId?: string, kind?: 'key-point' | 'code-example' | 'quiz-question') => {
+  if (!targetId || !kind) {
+    return `/topics/${topicId}`;
+  }
+
+  return `/topics/${topicId}#${kind}-${targetId}`;
+};
+
 function ResultSection({
   title,
   count,
@@ -43,7 +51,7 @@ function KeyPointResultCard({
   item: SearchResultsData['keyPoints'][number];
 }) {
   return (
-    <Card as={Link} href={`/topics/${item.topic.id}`} className="p-5 h-full group">
+    <Card as={Link} href={getTopicHref(item.topic.id, item.id, 'key-point')} className="p-5 h-full group">
       <div className="search-preview-fade">
         <p className="text-xs text-[var(--ink-light)] mb-1">Key Point · {item.topic.title}</p>
         <h3 className="text-base font-serif font-semibold text-[var(--ink)] mb-2">
@@ -63,7 +71,7 @@ function CodeExampleResultCard({
   item: SearchResultsData['codeExamples'][number];
 }) {
   return (
-    <Card as={Link} href={`/topics/${item.topic.id}`} className="p-5 h-full group">
+    <Card as={Link} href={getTopicHref(item.topic.id, item.id, 'code-example')} className="p-5 h-full group">
       <div className="search-preview-fade" style={{ '--fade-max-height': '14rem' } as React.CSSProperties}>
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs text-[var(--ink-light)]">Code Example · {item.topic.title}</p>
@@ -93,7 +101,7 @@ function QuizQuestionResultCard({
   item: SearchResultsData['quizQuestions'][number];
 }) {
   return (
-    <Card as={Link} href={`/topics/${item.topic.id}`} className="p-5 h-full group">
+    <Card as={Link} href={getTopicHref(item.topic.id, item.id, 'quiz-question')} className="p-5 h-full group">
       <div className="search-preview-fade">
         <p className="text-xs text-[var(--ink-light)] mb-1">Question · {item.topic.title}</p>
         <div className="text-base font-serif font-semibold text-[var(--ink)] mb-2">

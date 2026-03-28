@@ -1,4 +1,5 @@
 export interface CodeExample {
+  id?: string;
   title: string;
   language: string;
   code: string;
@@ -6,11 +7,13 @@ export interface CodeExample {
 }
 
 export interface KeyPoint {
+  id?: string;
   title: string;
   description: string;
 }
 
 export interface QuizQuestion {
+  id?: string;
   question: string;
   answer: string;
 }

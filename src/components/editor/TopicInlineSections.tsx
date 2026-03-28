@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { CodeBlock, Markdown } from '@/components';
@@ -37,6 +37,60 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
   const isAuthenticated = status === 'authenticated';
   const shouldShowCodeExamples = topic.codeExamples.length > 0 || isAuthenticated;
   const shouldShowQuestions = (topic.quizQuestions?.length || 0) > 0 || isAuthenticated;
+
+  useEffect(() => {
+    let flashTimeout: number | undefined;
+
+    const getSectionFromHash = (hash: string) => {
+      if (hash.startsWith('#key-point-')) return 'key-points';
+      if (hash.startsWith('#code-example-')) return 'code-examples';
+      if (hash.startsWith('#quiz-question-')) return 'questions';
+      return null;
+    };
+
+    const revealHashTarget = () => {
+      const { hash } = window.location;
+      if (!hash) return;
+
+      const sectionId = getSectionFromHash(hash);
+      if (sectionId) {
+        const section = document.getElementById(sectionId) as HTMLDetailsElement | null;
+        if (section) {
+          section.open = true;
+        }
+      }
+
+      requestAnimationFrame(() => {
+        const target = document.getElementById(hash.slice(1));
+        if (!target) return;
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        document.querySelectorAll('.search-target-flash').forEach((element) => {
+          element.classList.remove('search-target-flash');
+        });
+
+        window.clearTimeout(flashTimeout);
+        flashTimeout = window.setTimeout(() => {
+          target.classList.remove('search-target-flash');
+          void target.getBoundingClientRect();
+          target.classList.add('search-target-flash');
+
+          window.setTimeout(() => {
+            target.classList.remove('search-target-flash');
+          }, 1400);
+        }, 220);
+      });
+    };
+
+    revealHashTarget();
+    window.addEventListener('hashchange', revealHashTarget);
+
+    return () => {
+      window.clearTimeout(flashTimeout);
+      window.removeEventListener('hashchange', revealHashTarget);
+    };
+  }, []);
 
   const closeModal = () => {
     setEditKind(null);
@@ -254,7 +308,7 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
     <>
       {error && <p className="text-sm text-[var(--accent)] mb-5">{error}</p>}
 
-      <details open className="group mb-10">
+      <details id="key-points" open className="group mb-10">
         <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
           <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Key Points</h2>
           <div className="flex items-center gap-2">
@@ -278,7 +332,11 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
         </summary>
         <div className="space-y-4">
           {topic.keyPoints.map((point, index) => (
-            <div key={index} className="bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow">
+            <div
+              key={point.id || index}
+              id={point.id ? `key-point-${point.id}` : undefined}
+              className="search-target bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow scroll-mt-24"
+            >
               <div className="flex items-start justify-between gap-3 mb-1">
                 <h3 className="font-serif font-semibold text-[var(--ink)]">{point.title}</h3>
                 {isAuthenticated && (
@@ -302,7 +360,7 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
       </details>
 
       {shouldShowCodeExamples && (
-        <details className="group mb-10">
+        <details id="code-examples" className="group mb-10">
           <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
             <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Code Examples</h2>
             <div className="flex items-center gap-2">
@@ -326,7 +384,11 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
           </summary>
           <div className="space-y-6">
             {topic.codeExamples.map((example, index) => (
-              <div key={index} className="space-y-2">
+              <div
+                key={example.id || index}
+                id={example.id ? `code-example-${example.id}` : undefined}
+                className="search-target space-y-2 scroll-mt-24"
+              >
                 {isAuthenticated && (
                   <div className="flex justify-end gap-2 text-xs">
                     <Button onClick={() => openEditCodeExample(index)}>Edit</Button>
@@ -346,7 +408,7 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
       )}
 
       {shouldShowQuestions && (
-        <details className="group mb-10">
+        <details id="questions" className="group mb-10">
           <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
             <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Questions</h2>
             <div className="flex items-center gap-2">
@@ -370,7 +432,11 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
           </summary>
           <div className="space-y-4">
             {(topic.quizQuestions || []).map((item, index) => (
-              <div key={index} className="bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow">
+              <div
+                key={item.id || index}
+                id={item.id ? `quiz-question-${item.id}` : undefined}
+                className="search-target bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow scroll-mt-24"
+              >
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <h3 className="font-serif font-semibold text-[var(--ink)]">Question {index + 1}</h3>
                   {isAuthenticated && (

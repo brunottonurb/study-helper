@@ -39,16 +39,19 @@ function transformTopicFromDB(dbTopic: TopicWithRelations): Topic {
     confidence: dbTopic.confidence as 'beginner' | 'intermediate' | 'advanced' | 'expert',
     lastReviewed: dbTopic.lastReviewed || undefined,
     keyPoints: dbTopic.keyPoints.map((kp) => ({
+      id: kp.id,
       title: kp.title,
       description: kp.description,
     })),
     codeExamples: dbTopic.codeExamples.map((ce) => ({
+      id: ce.id,
       title: ce.title,
       language: ce.language,
       code: ce.code,
       explanation: ce.explanation || undefined,
     })),
     quizQuestions: dbTopic.quizQuestions.map((qq) => ({
+      id: qq.id,
       question: qq.question,
       answer: qq.answer,
     })),
