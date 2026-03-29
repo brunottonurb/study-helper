@@ -383,4 +383,10 @@ docker-compose exec study-helper npx prisma studio
 
 # Execute custom commands
 docker-compose exec study-helper npm run lint
+
+# Copy local dev.db into Docker volume (container must be running)
+docker-compose cp dev.db study-helper:/app/data/prisma.db
+
+# Alternative: Copy to volume without running container
+docker run --rm -v study-helper-db:/app/data -v $(pwd):/host alpine cp /host/dev.db /app/data/prisma.db
 ```
