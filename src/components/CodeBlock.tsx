@@ -47,7 +47,7 @@ export default function CodeBlock({ example }: CodeBlockProps) {
         </div>
         <button
           onClick={copyToClipboard}
-          className="text-[var(--ink-light)] hover:text-[var(--ink)] transition-colors p-1"
+          className="text-[var(--ink-light)] hover:text-[var(--ink)] transition-colors p-1 cursor-pointer"
         >
           {copied ? (
             <svg className="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
