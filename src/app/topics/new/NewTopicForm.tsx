@@ -251,7 +251,7 @@ export default function NewTopicForm() {
           <div className="space-y-4">
             <div>
               <label htmlFor="id" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                ID (URL-friendly) *
+                ID (URL-friendly) <span className="text-[var(--accent)]"> *</span>
               </label>
               <input
                 type="text"
@@ -267,7 +267,7 @@ export default function NewTopicForm() {
 
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                Title *
+                Title <span className="text-[var(--accent)]"> *</span>
               </label>
               <input
                 type="text"
@@ -282,9 +282,6 @@ export default function NewTopicForm() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                Description *
-              </label>
               <MarkdownEditor
                 id="description"
                 label="Description"
@@ -313,7 +310,7 @@ export default function NewTopicForm() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="categoryId" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                  Subject *
+                  Subject <span className="text-[var(--accent)]"> *</span>
                 </label>
                 <select
                   id="categoryId"
@@ -334,7 +331,7 @@ export default function NewTopicForm() {
 
               <div>
                 <label htmlFor="confidence" className="block text-sm font-medium text-[var(--ink)] mb-2">
-                  Your Confidence Level *
+                  Your Confidence Level <span className="text-[var(--accent)]"> *</span>
                 </label>
                 <select
                   id="confidence"
