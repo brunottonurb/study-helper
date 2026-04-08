@@ -35,8 +35,9 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
   const [quizQuestionForm, setQuizQuestionForm] = useState<QuizQuestion>({ question: '', answer: '' });
 
   const isAuthenticated = status === 'authenticated';
-  const shouldShowCodeExamples = topic.codeExamples.length > 0 || isAuthenticated;
-  const shouldShowQuestions = (topic.quizQuestions?.length || 0) > 0 || isAuthenticated;
+  const keyPointsCount = topic.keyPoints.length;
+  const codeExamplesCount = topic.codeExamples.length;
+  const questionsCount = topic.quizQuestions?.length || 0;
 
   useEffect(() => {
     let flashTimeout: number | undefined;
@@ -310,7 +311,7 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
 
       <details id="key-points" open className="group mb-10">
         <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
-          <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Key Points</h2>
+          <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Key Points ({keyPointsCount})</h2>
           <div className="flex items-center gap-2">
             {isAuthenticated && (
               <Button
@@ -353,120 +354,116 @@ export default function TopicInlineSections({ topic }: TopicInlineSectionsProps)
               </div>
             </div>
           ))}
-          {topic.keyPoints.length === 0 && (
+          {keyPointsCount === 0 && (
             <div className="text-sm text-[var(--ink-light)]">No key points yet.</div>
           )}
         </div>
       </details>
 
-      {shouldShowCodeExamples && (
-        <details id="code-examples" className="group mb-10">
-          <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
-            <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Code Examples</h2>
-            <div className="flex items-center gap-2">
+      <details id="code-examples" className="group mb-10">
+        <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
+          <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Code Examples ({codeExamplesCount})</h2>
+          <div className="flex items-center gap-2">
+            {isAuthenticated && (
+              <Button
+                onClick={(event) => handleSectionAction(event, openAddCodeExample)}
+                disabled={saving}
+              >
+                Add
+              </Button>
+            )}
+            <svg
+              className="w-5 h-5 text-[var(--ink-light)] transition-transform group-open:rotate-180"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </summary>
+        <div className="space-y-6">
+          {topic.codeExamples.map((example, index) => (
+            <div
+              key={example.id || index}
+              id={example.id ? `code-example-${example.id}` : undefined}
+              className="search-target space-y-2 scroll-mt-24"
+            >
               {isAuthenticated && (
-                <Button
-                  onClick={(event) => handleSectionAction(event, openAddCodeExample)}
-                  disabled={saving}
-                >
-                  Add
-                </Button>
+                <div className="flex justify-end gap-2 text-xs">
+                  <Button onClick={() => openEditCodeExample(index)}>Edit</Button>
+                  <Button tone="danger" onClick={() => handleDeleteCodeExample(index)}>
+                    Delete
+                  </Button>
+                </div>
               )}
-              <svg
-                className="w-5 h-5 text-[var(--ink-light)] transition-transform group-open:rotate-180"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-              </svg>
+              <CodeBlock example={example} />
             </div>
-          </summary>
-          <div className="space-y-6">
-            {topic.codeExamples.map((example, index) => (
-              <div
-                key={example.id || index}
-                id={example.id ? `code-example-${example.id}` : undefined}
-                className="search-target space-y-2 scroll-mt-24"
+          ))}
+          {codeExamplesCount === 0 && (
+            <div className="text-sm text-[var(--ink-light)]">No code examples yet.</div>
+          )}
+        </div>
+      </details>
+
+      <details id="questions" className="group mb-10">
+        <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
+          <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Questions ({questionsCount})</h2>
+          <div className="flex items-center gap-2">
+            {isAuthenticated && (
+              <Button
+                onClick={(event) => handleSectionAction(event, openAddQuizQuestion)}
+                disabled={saving}
               >
+                Add
+              </Button>
+            )}
+            <svg
+              className="w-5 h-5 text-[var(--ink-light)] transition-transform group-open:rotate-180"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </summary>
+        <div className="space-y-4">
+          {(topic.quizQuestions || []).map((item, index) => (
+            <div
+              key={item.id || index}
+              id={item.id ? `quiz-question-${item.id}` : undefined}
+              className="search-target bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow scroll-mt-24"
+            >
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <h3 className="font-serif font-semibold text-[var(--ink)]">Question {index + 1}</h3>
                 {isAuthenticated && (
-                  <div className="flex justify-end gap-2 text-xs">
-                    <Button onClick={() => openEditCodeExample(index)}>Edit</Button>
-                    <Button tone="danger" onClick={() => handleDeleteCodeExample(index)}>
+                  <div className="flex items-center gap-2 text-xs shrink-0">
+                    <Button onClick={() => openEditQuizQuestion(index)}>Edit</Button>
+                    <Button tone="danger" onClick={() => handleDeleteQuizQuestion(index)}>
                       Delete
                     </Button>
                   </div>
                 )}
-                <CodeBlock example={example} />
               </div>
-            ))}
-            {topic.codeExamples.length === 0 && (
-              <div className="text-sm text-[var(--ink-light)]">No code examples yet.</div>
-            )}
-          </div>
-        </details>
-      )}
-
-      {shouldShowQuestions && (
-        <details id="questions" className="group mb-10">
-          <summary className="flex items-center justify-between cursor-pointer list-none mb-5 pb-2 border-b border-[var(--border)]">
-            <h2 className="text-xl font-serif font-semibold text-[var(--ink)]">Questions</h2>
-            <div className="flex items-center gap-2">
-              {isAuthenticated && (
-                <Button
-                  onClick={(event) => handleSectionAction(event, openAddQuizQuestion)}
-                  disabled={saving}
-                >
-                  Add
-                </Button>
-              )}
-              <svg
-                className="w-5 h-5 text-[var(--ink-light)] transition-transform group-open:rotate-180"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-              </svg>
+              <div className="text-[var(--ink)] leading-relaxed mb-4">
+                <Markdown>{item.question}</Markdown>
+              </div>
+              <div className="pt-3 border-t border-[var(--border)]">
+                <div className="text-xs uppercase tracking-[0.2em] text-[var(--ink-light)] mb-2">
+                  Answer
+                </div>
+                <div className="text-[var(--ink-light)] text-sm leading-relaxed">
+                  <Markdown>{item.answer}</Markdown>
+                </div>
+              </div>
             </div>
-          </summary>
-          <div className="space-y-4">
-            {(topic.quizQuestions || []).map((item, index) => (
-              <div
-                key={item.id || index}
-                id={item.id ? `quiz-question-${item.id}` : undefined}
-                className="search-target bg-[var(--paper)] border border-[var(--border)] p-4 paper-shadow scroll-mt-24"
-              >
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <h3 className="font-serif font-semibold text-[var(--ink)]">Question {index + 1}</h3>
-                  {isAuthenticated && (
-                    <div className="flex items-center gap-2 text-xs shrink-0">
-                      <Button onClick={() => openEditQuizQuestion(index)}>Edit</Button>
-                      <Button tone="danger" onClick={() => handleDeleteQuizQuestion(index)}>
-                        Delete
-                      </Button>
-                    </div>
-                  )}
-                </div>
-                <div className="text-[var(--ink)] leading-relaxed mb-4">
-                  <Markdown>{item.question}</Markdown>
-                </div>
-                <div className="pt-3 border-t border-[var(--border)]">
-                  <div className="text-xs uppercase tracking-[0.2em] text-[var(--ink-light)] mb-2">
-                    Answer
-                  </div>
-                  <div className="text-[var(--ink-light)] text-sm leading-relaxed">
-                    <Markdown>{item.answer}</Markdown>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {(topic.quizQuestions || []).length === 0 && (
-              <div className="text-sm text-[var(--ink-light)]">No questions yet.</div>
-            )}
-          </div>
-        </details>
-      )}
+          ))}
+          {questionsCount === 0 && (
+            <div className="text-sm text-[var(--ink-light)]">No questions yet.</div>
+          )}
+        </div>
+      </details>
 
       <Modal
         title={
