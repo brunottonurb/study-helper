@@ -54,10 +54,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ### Default Admin Credentials
 
-After seeding the database, you can log in to the admin panel at `/admin/login`:
+Run database migrations to create the admin user:
 
 - **Username:** `admin`
 - **Password:** `admin`
+
+You can then log in to the admin panel at `/admin/login`
 
 ⚠️ **Important:** Change these credentials in production!
 
@@ -74,49 +76,13 @@ NEXTAUTH_SECRET="change-this-to-a-random-secret-in-production"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-## Admin Panel
+## Managing Content
 
-The admin panel provides a complete content management system:
+You can add, edit, and delete categories and topics through the admin panel:
 
-### Accessing the Admin Panel
-
-1. Navigate to `/admin/login`
-2. Log in with admin credentials
-3. Access the dashboard at `/admin`
-
-### Managing Content
-
-- **Subjects**: Create, edit, and delete study subjects at `/admin/subjects` (routes still use `/categories` internally)
-- **Topics**: Manage topics with full editing of key points, code examples, and quiz questions at `/admin/topics`
-- **Real-time Updates**: Changes are immediately reflected on the public-facing site
-
-### Admin Features
-
-- Visual subject management with color preview
-- Rich topic editor with:
-  - Multiple key points
-  - Code examples with syntax highlighting
-  - Quiz questions for testing
-  - Resource links
-- Subject filtering for topics
-- Confirmation dialogs for deletions
-- Responsive design for mobile editing
-
-## Adding Content
-
-### Option 1: Through Admin Panel (Recommended)
-
-1. Log in to `/admin/login`
-2. Navigate to Subjects or Topics management
-3. Use the web interface to add/edit content
-
-### Option 2: Direct Database Seeding
-
-Edit `prisma/seed.ts` to add content programmatically, then run:
-
-```bash
-npx prisma db seed
-```
+1. Log in at `/admin/login` with your admin credentials
+2. Navigate to `/admin/categories` or `/admin/topics`
+3. Use the web interface to manage your content
 
 ## Project Structure
 
@@ -132,9 +98,32 @@ src/
 │   │   ├── categories/  # Subject CRUD
 │   │   └── topics/      # Topic CRUD
 │   ├── categories/      # Public subject pages
+=======
+│   │   ├── page.tsx     # Admin dashboard
+│   │   ├── layout.tsx   # Admin layout
+│   │   ├── login/       # Admin login page
+│   │   ├── change-password/  # Change password page
+│   │   ├── categories/  # Category management
+│   │   │   ├── page.tsx
+│   │   │   ├── new/
+│   │   │   └── [id]/
+│   │   └── topics/      # Topic management
+│   │       ├── page.tsx
+│   │       ├── new/
+│   │       └── [id]/
+│   ├── api/             # API routes
+│   │   ├── admin/change-password/  # Change password endpoint
+│   │   ├── auth/[...nextauth]/     # NextAuth endpoints
+│   │   ├── categories/             # Category CRUD
+│   │   └── topics/                 # Topic CRUD
+│   ├── categories/      # Public category pages
 │   ├── topics/          # Public topic pages
-│   ├── search/          # Search page
+│   ├── favorites/       # Favorites page
 │   ├── quiz/            # Quiz mode
+│   ├── quiz-questions/  # Quiz questions page
+│   ├── search/          # Search page
+│   ├── globals.css      # Global styles
+│   ├── layout.tsx       # Root layout
 │   └── page.tsx         # Homepage
 ├── components/          # Reusable React components
 ├── lib/                 # Utility functions
@@ -142,7 +131,7 @@ src/
 │   ├── data.ts         # Database queries
 │   └── prisma.ts       # Prisma client
 ├── types/              # TypeScript definitions
-└── middleware.ts       # Authentication middleware
+└── data/               # Static content data
 
 prisma/
 ├── schema.prisma       # Database schema
@@ -160,7 +149,7 @@ prisma/
 | `npm run lint` | Run ESLint |
 | `npx prisma studio` | Open Prisma Studio (database GUI) |
 | `npx prisma migrate dev` | Create and apply migrations |
-| `npx prisma db seed` | Seed database with initial data |
+| `npx prisma db seed` | Create default admin user |
 
 ## Database Management with Prisma
 
@@ -178,11 +167,8 @@ cp .env.example .env
 # 3. Generate Prisma Client
 npx prisma generate
 
-# 4. Run migrations to create database tables
+# 4. Run migrations to create database tables and admin user
 npx prisma migrate dev
-
-# 5. Seed the database with initial data
-npx prisma db seed
 ```
 
 ### Common Database Tasks
@@ -230,16 +216,15 @@ npx prisma migrate reset
 # 4. Run the seed script
 ```
 
-#### Reseeding Data
+#### Resetting Admin User
 
-If you want to refresh the data without resetting the entire database:
+If you need to reset the admin user password to the default:
 
 ```bash
-# Just run the seed script again
-npx prisma db seed
+# Reset the database and recreate the admin user
+npx prisma migrate reset
+# Say 'yes' to confirm
 ```
-
-Note: The seed script uses `upsert` operations, so it will update existing records or create new ones.
 
 #### Checking Migration Status
 
@@ -314,7 +299,61 @@ Note: `migrate deploy` is used in production (doesn't prompt, doesn't seed).
 
 The project includes Docker and Docker Compose configuration for easy containerized deployment.
 
-#### Quick Start with Docker Compose
+### Docker Compose Deployment
+
+The easiest way to deploy locally or on a VPS with automatic backups:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/brunottonurb/study-helper.git
+cd study-helper
+
+# 2. Start the application
+docker-compose up -d
+```
+
+The application will be available at `http://localhost:3000`.
+
+Features included:
+- **Automatic migrations** - Database schema is created on first run
+- **Persistent storage** - Database volume persists across restarts
+- **Health checks** - Container monitors application health
+- **Automatic backups** - Daily backups of the database to `./backups/`
+- **Auto-restart** - Container restarts unless manually stopped
+
+#### Customizing Docker Deployment
+
+Edit `docker-compose.yml` to customize:
+- Port mapping (default: `3000:3000`)
+- Environment variables (especially `AUTH_SECRET` for production)
+- Backup location and frequency
+
+For production use with a custom domain:
+
+```yaml
+# In docker-compose.yml, update the environment section:
+environment:
+  NEXTAUTH_URL: "https://your-domain.com"
+  AUTH_SECRET: "your-secure-random-secret"
+```
+
+#### Managing the Docker Deployment
+
+```bash
+# View logs
+docker-compose logs -f study-helper
+
+# Stop the application
+docker-compose down
+
+# Backup the database manually
+cp ./backups/latest.db ./backups/backup-$(date +%Y%m%d-%H%M%S).db
+
+# Access Prisma Studio
+docker-compose exec study-helper npx prisma studio
+```
+
+### Production Checklist
 
 1. Create a `.env` file with required variables:
 ```bash
