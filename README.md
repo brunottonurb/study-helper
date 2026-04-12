@@ -301,7 +301,7 @@ The project includes Docker and Docker Compose configuration for easy containeri
 
 ### Docker Compose Deployment
 
-The easiest way to deploy locally or on a VPS with automatic backups:
+The easiest way to deploy locally or on a VPS:
 
 ```bash
 # 1. Clone the repository
@@ -313,45 +313,6 @@ docker-compose up -d
 ```
 
 The application will be available at `http://localhost:3000`.
-
-Features included:
-- **Automatic migrations** - Database schema is created on first run
-- **Persistent storage** - Database volume persists across restarts
-- **Health checks** - Container monitors application health
-- **Automatic backups** - Daily backups of the database to `./backups/`
-- **Auto-restart** - Container restarts unless manually stopped
-
-#### Customizing Docker Deployment
-
-Edit `docker-compose.yml` to customize:
-- Port mapping (default: `3000:3000`)
-- Environment variables (especially `AUTH_SECRET` for production)
-- Backup location and frequency
-
-For production use with a custom domain:
-
-```yaml
-# In docker-compose.yml, update the environment section:
-environment:
-  NEXTAUTH_URL: "https://your-domain.com"
-  AUTH_SECRET: "your-secure-random-secret"
-```
-
-#### Managing the Docker Deployment
-
-```bash
-# View logs
-docker-compose logs -f study-helper
-
-# Stop the application
-docker-compose down
-
-# Backup the database manually
-cp ./backups/latest.db ./backups/backup-$(date +%Y%m%d-%H%M%S).db
-
-# Access Prisma Studio
-docker-compose exec study-helper npx prisma studio
-```
 
 ### Production Checklist
 
@@ -366,51 +327,64 @@ echo 'AUTH_TRUST_HOST="true"' >> .env
 docker-compose up -d
 ```
 
-The app will be available at `http://localhost:3000`. The database and backups are persisted in Docker volumes.
+3. (Optional) For a custom domain, set:
+```yaml
+# In docker-compose.yml, update the environment section:
+environment:
+  NEXTAUTH_URL: "https://your-domain.com"
+  AUTH_SECRET: "your-secure-random-secret"
+```
 
 #### What's Included
 
 - **Multi-stage build**: Optimized production image with minimal size
+- **Automatic migrations**: Database schema initialized on startup
 - **SQLite database**: Persisted via Docker volume
-- **Automatic backups**: Daily database backups to `/backups` directory
+- **Optional backups**: Daily backups when the `backup` profile is enabled
 - **Health checks**: Container monitoring and auto-restart
-- **Database migrations**: Automatic schema initialization on startup
 
 #### Environment Variables for Docker
 
-- `DATABASE_URL`: Set to `file:/app/data/prisma.db` (configured in docker-compose.yml)
+- `DATABASE_URL`: `file:/app/data/prisma.db` (configured in `docker-compose.yml`)
 - `AUTH_SECRET`: **Required**. Generate with: `openssl rand -base64 32`
 - `AUTH_TRUST_HOST`: Set to `"true"` for Docker environments
 - `NEXTAUTH_URL`: Optional, defaults to `http://localhost:3000`
 
-#### Accessing the App
+#### Database Path (Docker vs Local)
 
-- **Public site**: http://localhost:3000
-- **Admin login**: http://localhost:3000/admin/login
-- **Default credentials**: admin / admin (⚠️ change in production!)
+- Docker deployment uses `DATABASE_URL=file:/app/data/prisma.db`
+- Local non-Docker development typically uses `DATABASE_URL=file:./dev.db` (from `.env`)
 
 #### Database Backups
 
-Backups are created daily and stored in `./backups/`. Format: `prisma-YYYYMMDD-HHMMSS.db`
-
-#### Stopping the Application
+Backups are disabled by default. Enable the `backup` profile when needed.
 
 ```bash
+# Start app without backup (default)
+docker-compose up -d
+
+# Enable backup service
+docker-compose --profile backup up -d backup
+
+# Stop backup service
+docker-compose stop backup
+docker-compose rm -f backup
+```
+
+Backups are stored in `./backups/` with format `prisma-YYYYMMDD-HHMMSS.db`.
+
+#### Managing the Docker Deployment
+
+```bash
+# View logs
+docker-compose logs -f study-helper
+
+# Stop the application
 docker-compose down
 
-# To also remove the database volume (WARNING: deletes data)
+# Stop and remove app plus database volume (WARNING: deletes data)
 docker-compose down -v
-```
 
-#### Viewing Logs
-
-```bash
-docker-compose logs -f study-helper
-```
-
-#### Advanced Docker Commands
-
-```bash
 # Rebuild the image
 docker-compose build --no-cache
 
@@ -426,6 +400,6 @@ docker-compose exec study-helper npm run lint
 # Copy local dev.db into Docker volume (container must be running)
 docker-compose cp dev.db study-helper:/app/data/prisma.db
 
-# Alternative: Copy to volume without running container
+# Alternative: copy to volume without running container
 docker run --rm -v study-helper-db:/app/data -v $(pwd):/host alpine cp /host/dev.db /app/data/prisma.db
 ```
