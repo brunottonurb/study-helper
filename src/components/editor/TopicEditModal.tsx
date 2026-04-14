@@ -114,7 +114,7 @@ export default function TopicEditModal({ topic }: TopicEditModalProps) {
 
   return (
     <>
-      <Button size="sm" onClick={openModal}>
+      <Button onClick={openModal}>
         Edit
       </Button>
 

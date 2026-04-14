@@ -65,7 +65,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
             <h1 className="text-3xl font-serif font-bold text-[var(--ink)]">{topic.title}</h1>
             <div className="flex items-center space-x-2">
               <FavoriteButton topicId={topic.id} />
-              <span className="text-xs text-[var(--ink-light)] font-mono border border-[var(--border)] px-2 py-1 bg-[var(--paper)]">
+              <span className="inline-flex items-center text-xs leading-4 text-[var(--ink-light)] font-mono border border-[var(--border)] px-2 py-1 bg-[var(--paper)]">
                 {confidenceLabels[topic.confidence]}
               </span>
               <TopicEditModal topic={topic} />
