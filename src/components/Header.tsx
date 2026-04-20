@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
@@ -9,6 +9,7 @@ import { useTheme } from './ThemeProvider';
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
@@ -16,12 +17,36 @@ export default function Header() {
   const isAdmin = status === 'authenticated';
   const showSearch = pathname !== '/login';
 
+  useEffect(() => {
+    const headerElement = headerRef.current;
+
+    if (!headerElement) {
+      return;
+    }
+
+    const updateHeaderHeight = () => {
+      document.documentElement.style.setProperty('--app-header-height', `${headerElement.offsetHeight}px`);
+    };
+
+    updateHeaderHeight();
+
+    const resizeObserver = new ResizeObserver(updateHeaderHeight);
+    resizeObserver.observe(headerElement);
+    window.addEventListener('resize', updateHeaderHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateHeaderHeight);
+    };
+  }, [isAdmin, pathname, showSearch]);
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/categories', label: 'Subjects' },
     { href: '/quiz', label: 'Quiz' },
     { href: '/quiz-questions', label: 'Questions' },
     { href: '/favorites', label: 'My List' },
+    { href: '/overview', label: 'Overview' },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
@@ -33,7 +58,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-sm border-b border-[var(--border)] pt-3 relative">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-sm border-b border-[var(--border)] pt-3 relative">
       <div className="flex items-center justify-between gap-3 px-3 pb-3 md:pb-0">
         <Link href="/" className="flex items-center shrink-0">
           <span className="text-xl sm:text-2xl font-serif font-bold text-[var(--ink)] tracking-tight whitespace-nowrap">

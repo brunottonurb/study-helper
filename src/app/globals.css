@@ -2,6 +2,7 @@
 
 :root,
 [data-theme="light"] {
+  --app-header-height: 0px;
   --background: #faf9f6;
   --foreground: #1a1a1a;
   --paper: #ffffff;

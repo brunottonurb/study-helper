@@ -16,13 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className="antialiased bg-[var(--background)] text-[var(--ink)] min-h-screen transition-colors duration-300"
+        className="antialiased bg-[var(--background)] text-[var(--ink)] min-h-screen flex flex-col transition-colors duration-300"
       >
         <AuthProvider>
           <ThemeProvider>
             <UserDataProvider>
               <Header />
-              <main>{children}</main>
+              <main className="flex-1 min-h-0">{children}</main>
             </UserDataProvider>
           </ThemeProvider>
         </AuthProvider>
